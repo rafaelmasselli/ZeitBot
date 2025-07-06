@@ -24,33 +24,33 @@ app.get("/health", (req: Request, res: Response) => {
 });
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-  next(new AppError(`Rota não encontrada: ${req.originalUrl}`, 404));
+  next(new AppError(`Route not found: ${req.originalUrl}`, 404));
 });
 
 app.use(errorHandler);
 
 const PORT: number = config.PORT;
 const server = app.listen(PORT, () => {
-  logger.info(`Servidor rodando na porta ${PORT} em modo ${config.NODE_ENV}`);
-
+  logger.info(`Server running on port ${PORT} in ${config.NODE_ENV} mode`);
+  
   initCronJobs();
-  logger.info("Jobs cron inicializados");
+  logger.info("Cron jobs initialized");
 });
 
 process.on("uncaughtException", (error: Error) => {
-  logger.error(`Exceção não capturada: ${error.message}`);
+  logger.error(`Uncaught exception: ${error.message}`);
   logger.error(error.stack);
   process.exit(1);
 });
 
 process.on("unhandledRejection", (reason: Error) => {
-  logger.error(`Promessa rejeitada não tratada: ${reason.message}`);
+  logger.error(`Unhandled promise rejection: ${reason.message}`);
   logger.error(reason.stack);
-
+  
   server.close(() => {
     process.exit(1);
   });
-
+  
   setTimeout(() => {
     process.exit(1);
   }, 10000);

@@ -4,7 +4,6 @@ export interface Config {
   DATABASE_URL?: string;
 }
 
-// Tipos para resposta de API
 export interface ApiResponse<T = any> {
   success: boolean;
   data?: T;
@@ -12,21 +11,18 @@ export interface ApiResponse<T = any> {
   timestamp: string;
 }
 
-// Tipos para jobs
 export interface JobConfig {
   name: string;
   schedule: string;
   enabled: boolean;
 }
 
-// Tipos para serviços de API
 export interface ApiServiceOptions {
   baseURL: string;
   timeout?: number;
   headers?: Record<string, string>;
 }
 
-// Tipos para erros customizados
 export class AppError extends Error {
   status: number;
 

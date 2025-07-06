@@ -1,61 +1,56 @@
-import cron from 'node-cron';
-import { logger } from '../utils/logger';
-import { JobConfig } from '../types';
+import cron from "node-cron";
+import { logger } from "../utils/logger";
+import { JobConfig } from "../types";
 
-// Exemplo de job
-import { exampleJob } from './example.job';
+import { exampleJob } from "./example.job";
 
-// Lista de jobs configurados
 const jobs: JobConfig[] = [
   {
-    name: 'exampleJob',
-    schedule: '*/30 * * * *', // A cada 30 minutos
+    name: "exampleJob",
+    schedule: "*/30 * * * *",
     enabled: true,
   },
-  // Adicione mais jobs conforme necessário
 ];
 
-/**
- * Inicializa todos os jobs cron habilitados
- */
 export const initCronJobs = (): void => {
-  logger.info('Inicializando jobs cron...');
+  logger.info("Initializing cron jobs...");
 
   jobs.forEach((job) => {
     if (!job.enabled) {
-      logger.info(`Job ${job.name} está desabilitado`);
+      logger.info(`Job ${job.name} is disabled`);
       return;
     }
 
     try {
       if (!cron.validate(job.schedule)) {
-        throw new Error(`Expressão cron inválida: ${job.schedule}`);
+        throw new Error(`Invalid cron expression: ${job.schedule}`);
       }
 
-      // Registra o job com o schedule especificado
       cron.schedule(job.schedule, async () => {
-        logger.info(`Executando job: ${job.name}`);
-        
+        logger.info(`Running job: ${job.name}`);
+
         try {
-          // Executa o job correspondente
           switch (job.name) {
-            case 'exampleJob':
+            case "exampleJob":
               await exampleJob();
               break;
-            // Adicione mais casos conforme necessário
             default:
-              logger.warn(`Job desconhecido: ${job.name}`);
+              logger.warn(`Unknown job: ${job.name}`);
           }
-          
-          logger.info(`Job ${job.name} concluído com sucesso`);
+
+          logger.info(`Job ${job.name} completed successfully`);
         } catch (error) {
-          logger.error(`Erro ao executar job ${job.name}: ${(error as Error).message}`);
+          logger.error(
+            `Error running job ${job.name}: ${(error as Error).message}`
+          );
         }
       });
-      
-      logger.info(`Job ${job.name} agendado com sucesso: ${job.schedule}`);
+
+      logger.info(`Job ${job.name} scheduled successfully: ${job.schedule}`);
     } catch (error) {
-      logger.error(`Erro ao agendar job ${job.name}: ${(error as Error).message}`);
+      logger.error(
+        `Error scheduling job ${job.name}: ${(error as Error).message}`
+      );
     }
   });
-}; 
+};
