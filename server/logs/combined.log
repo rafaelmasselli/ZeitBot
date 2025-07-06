@@ -1,0 +1,4 @@
+2025-07-06 15:33:47 [info]: Servidor rodando na porta 3333 em modo production
+2025-07-06 15:33:47 [info]: Inicializando jobs cron...
+2025-07-06 15:33:47 [info]: Job exampleJob agendado com sucesso: */30 * * * *
+2025-07-06 15:33:47 [info]: Jobs cron inicializados
