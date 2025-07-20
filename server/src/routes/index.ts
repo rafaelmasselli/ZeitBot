@@ -1,10 +1,28 @@
 import { Router } from "express";
-import { healthRouter } from "./health.routes";
+import { injectable, inject } from "tsyringe";
+import { HealthRoutes } from "./health.routes";
+import { NewsRoutes } from "./news.routes";
 
-const router = Router();
+@injectable()
+class AppRoutes {
+  private router: Router;
 
-router.use("/health", healthRouter);
+  constructor(
+    @inject("HealthRoutes") private readonly healthRoutes: HealthRoutes,
+    @inject("NewsRoutes") private readonly newsRoutes: NewsRoutes
+  ) {
+    this.router = Router();
+    this.initializeRoutes();
+  }
 
-// router.use('/api/v1/resource', resourceRouter);
+  private initializeRoutes(): void {
+    this.router.use("/health", this.healthRoutes.getRouter());
+    this.router.use("/news", this.newsRoutes.getRouter());
+  }
 
-export default router;
+  public getRouter(): Router {
+    return this.router;
+  }
+}
+
+export { AppRoutes, HealthRoutes, NewsRoutes };

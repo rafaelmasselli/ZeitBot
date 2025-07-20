@@ -6,26 +6,38 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only src/index.ts",
     "test": "jest"
   },
   "dependencies": {
+    "@typegoose/typegoose": "^12.17.0",
+    "@types/cheerio": "^1.0.0",
+    "@types/cron": "^2.4.3",
     "axios": "^1.10.0",
-    "express": "^5.1.0",
-    "node-cron": "^3.0.3",
-    "dotenv": "^16.4.5",
-    "winston": "^3.13.0",
+    "cheerio": "^1.1.0",
     "cors": "^2.8.5",
-    "helmet": "^7.1.0"
+    "cron": "^4.3.1",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "helmet": "^7.1.0",
+    "mongoose": "^8.16.1",
+    "node-cron": "^3.0.3",
+    "reflect-metadata": "^0.2.2",
+    "tsyringe": "^4.10.0",
+    "winston": "^3.13.0",
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
+    "@types/mongoose": "^5.11.97",
     "@types/node": "^20.11.30",
     "@types/node-cron": "^3.0.11",
+    "@types/xml2js": "^0.4.14",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.2",
     "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.4.5"
   }
 }

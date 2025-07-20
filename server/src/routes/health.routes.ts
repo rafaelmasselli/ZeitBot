@@ -1,45 +1,61 @@
-import { Router, Request, Response } from 'express';
-import { logger } from '../utils/logger';
+import { Router, Request, Response } from "express";
+import { injectable, inject } from "tsyringe";
+import { ILogger } from "../utils";
 
-const router = Router();
+@injectable()
+export class HealthRoutes {
+  private router: Router;
 
-router.get('/', (req: Request, res: Response) => {
-  logger.debug('Health check requested');
-  
-  res.status(200).json({
-    success: true,
-    status: 'ok',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-    memory: process.memoryUsage(),
-  });
-});
+  constructor(@inject("ILogger") private readonly logger: ILogger) {
+    this.router = Router();
+    this.initializeRoutes();
+  }
 
-router.get('/deep', async (req: Request, res: Response) => {
-  logger.debug('Deep health check requested');
-  
-  try {
-    const jobsStatus = 'ok';
-    
+  private initializeRoutes(): void {
+    this.router.get("/", this.basicCheck.bind(this));
+    this.router.get("/deep", this.deepCheck.bind(this));
+  }
+
+  private basicCheck(req: Request, res: Response): void {
+    this.logger.debug("Health check requested");
+
     res.status(200).json({
       success: true,
-      status: 'ok',
+      status: "ok",
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
-      services: {
-        jobs: jobsStatus,
-      },
-    });
-  } catch (error) {
-    logger.error(`Error in deep health check: ${(error as Error).message}`);
-    
-    res.status(500).json({
-      success: false,
-      status: 'error',
-      timestamp: new Date().toISOString(),
-      error: (error as Error).message,
+      memory: process.memoryUsage(),
     });
   }
-});
 
-export { router as healthRouter }; 
+  private async deepCheck(req: Request, res: Response): Promise<void> {
+    this.logger.debug("Deep health check requested");
+
+    try {
+      res.status(200).json({
+        success: true,
+        status: "ok",
+        timestamp: new Date().toISOString(),
+        uptime: process.uptime(),
+        services: {
+          jobs: "ok",
+        },
+      });
+    } catch (error) {
+      this.logger.error(
+        `Error in deep health check: ${(error as Error).message}`
+      );
+
+      res.status(500).json({
+        success: false,
+        status: "error",
+        timestamp: new Date().toISOString(),
+        error: (error as Error).message,
+      });
+    }
+  }
+
+  public getRouter(): Router {
+    return this.router;
+  }
+}

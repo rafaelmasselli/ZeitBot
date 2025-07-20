@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { ApiServiceOptions, AppError } from "../types";
-import { logger } from "../utils/logger";
+import { logger } from "@/utils/logger";
+import { ApiServiceOptions, AppError } from "@/types/index";
 
 export class ApiService {
   protected client: AxiosInstance;
@@ -35,16 +35,16 @@ export class ApiService {
 
     this.client.interceptors.response.use(
       (response) => {
-        logger.debug(`Response from ${response.config.url}: ${response.status}`);
+        logger.debug(
+          `Response from ${response.config.url}: ${response.status}`
+        );
         return response;
       },
       (error) => {
         if (error.response) {
           const { status, data } = error.response;
           logger.error(
-            `API error ${error.config.url}: ${status} - ${JSON.stringify(
-              data
-            )}`
+            `API error ${error.config.url}: ${status} - ${JSON.stringify(data)}`
           );
 
           throw new AppError(

@@ -1,59 +1,33 @@
-import express, { Express, Request, Response, NextFunction } from "express";
-import cors from "cors";
-import helmet from "helmet";
-import { initCronJobs } from "./jobs";
-import routes from "./routes";
-import { logger } from "./utils/logger";
-import config from "./config";
+import "reflect-metadata";
+import "./config/container";
+import express from "express";
+import { container } from "tsyringe";
+import { NewsController } from "./controllers";
+import { DatabaseService } from "./database/connect";
+import { logger } from "./utils";
 import { errorHandler } from "./middlewares/error.middleware";
-import { AppError } from "./types";
+import { AppRoutes } from "./routes";
+import { initJobs } from "./jobs";
+import config from "./config";
 
-const app: Express = express();
+const app = express();
 
-app.use(helmet());
-app.use(cors());
 app.use(express.json());
-
-app.use("/api", routes);
-
-app.get("/health", (req: Request, res: Response) => {
-  res.status(200).json({
-    status: "ok",
-    timestamp: new Date().toISOString(),
-  });
-});
-
-app.use((req: Request, res: Response, next: NextFunction) => {
-  next(new AppError(`Route not found: ${req.originalUrl}`, 404));
-});
-
+app.use(container.resolve(AppRoutes).getRouter());
 app.use(errorHandler);
 
-const PORT: number = config.PORT;
-const server = app.listen(PORT, () => {
-  logger.info(`Server running on port ${PORT} in ${config.NODE_ENV} mode`);
-  
-  initCronJobs();
-  logger.info("Cron jobs initialized");
-});
-
-process.on("uncaughtException", (error: Error) => {
-  logger.error(`Uncaught exception: ${error.message}`);
-  logger.error(error.stack);
-  process.exit(1);
-});
-
-process.on("unhandledRejection", (reason: Error) => {
-  logger.error(`Unhandled promise rejection: ${reason.message}`);
-  logger.error(reason.stack);
-  
-  server.close(() => {
-    process.exit(1);
+container
+  .resolve(DatabaseService)
+  .connect()
+  .then(() => {
+    app.listen(config.PORT, () => {
+      logger.info(
+        `Server running on port ${config.PORT} in ${config.NODE_ENV} mode`
+      );
+      initJobs(container.resolve(NewsController));
+      logger.info("Cron jobs initialized");
+    });
+  })
+  .catch((error: Error) => {
+    logger.error(`Erro ao conectar ao MongoDB: ${error.message}`);
   });
-  
-  setTimeout(() => {
-    process.exit(1);
-  }, 10000);
-});
-
-export default app;

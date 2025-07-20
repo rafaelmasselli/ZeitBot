@@ -7,12 +7,15 @@ const logFormat = printf(({ level, message, timestamp }) => {
   return `${timestamp} [${level}]: ${message}`;
 });
 
+export interface ILogger {
+  info(message: string): void;
+  error(message: string): void;
+  debug(message: string): void;
+}
+
 export const logger = winston.createLogger({
   level: config.NODE_ENV === "production" ? "info" : "debug",
-  format: combine(
-    timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
-    logFormat
-  ),
+  format: combine(timestamp({ format: "YYYY-MM-DD HH:mm:ss" }), logFormat),
   transports: [
     new winston.transports.Console({
       format: combine(
