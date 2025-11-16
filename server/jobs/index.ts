@@ -9,6 +9,6 @@ export function initializeJobs(): void {
 
   const newsJob = createNewsJob(saveNewsUseCase, logger);
   
-  logger.info("✅ Jobs initialized successfully");
+  logger.info("Jobs initialized successfully");
 }
 

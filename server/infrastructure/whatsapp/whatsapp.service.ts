@@ -28,7 +28,7 @@ export class WhatsAppService implements IWhatsAppService {
 
     this.client.on("ready", () => {
       this.isReady = true;
-      this.logger.info("✅ WhatsApp client is ready!");
+      this.logger.info("WhatsApp client is ready!");
     });
 
     this.client.on("authenticated", () => {

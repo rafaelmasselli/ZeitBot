@@ -10,13 +10,11 @@ export function createNewsJob(
     "*/30 * * * *",
     async () => {
       try {
-        logger.info("🔄 Starting news processing");
+        logger.info("Starting news processing");
         await saveNewsUseCase.execute();
-        logger.info("✅ News processing completed");
+        logger.info("News processing completed");
       } catch (error) {
-        logger.error(
-          `❌ Error processing news: ${(error as Error).message}`
-        );
+        logger.error(`Error processing news: ${(error as Error).message}`);
       }
     },
     null,

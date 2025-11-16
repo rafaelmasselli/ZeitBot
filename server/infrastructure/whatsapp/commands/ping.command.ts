@@ -8,7 +8,7 @@ export class PingCommand implements IWhatsAppCommand {
   description = "Check if the bot is online";
 
   async execute(message: Message): Promise<void> {
-    await message.reply("🏓 Pong! The bot is online and working!");
+    await message.reply("Pong! The bot is online and working!");
   }
 }
 

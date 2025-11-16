@@ -13,7 +13,7 @@ export class HelpCommand implements IWhatsAppCommand {
   ) {}
 
   async execute(message: Message): Promise<void> {
-    let helpText = "*📚 Available Commands:*\n\n";
+    let helpText = "*Available Commands:*\n\n";
 
     const commands = this.commandHandler.getCommands();
     commands.forEach((cmd) => {

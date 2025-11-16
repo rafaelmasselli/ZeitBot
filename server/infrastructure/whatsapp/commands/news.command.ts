@@ -21,17 +21,17 @@ export class NewsCommand implements IWhatsAppCommand {
 
       const limitedNews = news.slice(0, 5);
 
-      let newsText = "*📰 Latest News:*\n\n";
+      let newsText = "*Latest News:*\n\n";
       limitedNews.forEach((item, index) => {
         newsText += `*${index + 1}. ${item.title}*\n`;
         newsText += `${item.description?.substring(0, 100)}...\n`;
-        newsText += `🔗 ${item.link}\n\n`;
+        newsText += `Link: ${item.link}\n\n`;
       });
 
       await message.reply(newsText);
     } catch (error) {
       await message.reply(
-        "❌ Error fetching news. Please try again later."
+        "Error fetching news. Please try again later."
       );
     }
   }

@@ -16,7 +16,7 @@ async function bootstrap() {
     const logger = container.resolve<ILogger>("ILogger");
     const config = container.resolve<IConfig>("IConfig");
 
-    logger.info("🚀 Starting ZeitBot Clean Architecture application");
+    logger.info("Starting ZeitBot Clean Architecture application");
 
     const databaseService = container.resolve(DatabaseService);
     await databaseService.connect();
@@ -40,12 +40,12 @@ async function bootstrap() {
     });
 
     process.on("SIGINT", async () => {
-      logger.info("🛑 Shutting down application...");
+      logger.info("Shutting down application...");
       await databaseService.disconnect();
       process.exit(0);
     });
   } catch (error) {
-    console.error("❌ Error starting server:", error);
+    console.error("Error starting server:", error);
     process.exit(1);
   }
 }
