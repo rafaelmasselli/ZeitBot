@@ -1,3 +1,3 @@
-export { IConfig } from "./config.interface";
-export { EnvConfig } from "./env.config";
+export * from "./config.interface";
+export * from "./env.config";
 

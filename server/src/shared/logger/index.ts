@@ -1,3 +1,3 @@
-export { ILogger } from "./logger.interface";
-export { WinstonLogger } from "./winston.logger";
+export * from "./logger.interface";
+export * from "./winston.logger";
 

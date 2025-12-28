@@ -1,3 +1,3 @@
-export { convertXmlToJson } from "./xml-converter";
-export { StringUtils } from "./string.utils";
+export * from "./xml-converter";
+export * from "./string.utils";
 

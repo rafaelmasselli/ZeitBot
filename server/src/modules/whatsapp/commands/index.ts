@@ -1,4 +1,4 @@
-export { HelpCommand } from "./help.command";
-export { NewsCommand } from "./news.command";
-export { PingCommand } from "./ping.command";
+export * from "./help.command";
+export * from "./news.command";
+export * from "./ping.command";
 

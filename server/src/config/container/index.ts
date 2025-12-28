@@ -1,2 +1,2 @@
-export { setupContainer } from "./container.config";
+export * from "./container.config";
 

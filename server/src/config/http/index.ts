@@ -1,2 +1,2 @@
-export { ExpressApp } from "./express.app";
+export * from "./express.app";
 

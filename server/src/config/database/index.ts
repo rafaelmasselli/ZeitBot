@@ -1,2 +1,2 @@
-export { DatabaseService } from "./connect";
+export * from "./connect";
 

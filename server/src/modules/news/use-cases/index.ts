@@ -1,3 +1,3 @@
-export { SaveNewsUseCase } from "./save-news.use-case";
-export { GetNewsUseCase } from "./get-news.use-case";
+export * from "./save-news.use-case";
+export * from "./get-news.use-case";
 
