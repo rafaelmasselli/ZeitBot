@@ -7,8 +7,10 @@ export function createNewsJob(
   saveNewsUseCase: SaveNewsUseCase,
   logger: ILogger
 ): CronJob {
+  const cronInterval = process.env.NEWS_CRON_INTERVAL || "*/30 * * * *";
+
   return new CronJob(
-    "*/30 * * * *",
+    cronInterval,
     async () => {
       try {
         logger.info("Starting news processing");
@@ -24,11 +26,22 @@ export function createNewsJob(
   );
 }
 
-export function initializeJobs(): void {
+export async function initializeJobs(): Promise<void> {
   const saveNewsUseCase = container.resolve(SaveNewsUseCase);
   const logger = container.resolve<ILogger>("ILogger");
 
-  const newsJob = createNewsJob(saveNewsUseCase, logger);
-  
-  logger.info("Jobs initialized successfully");
+  createNewsJob(saveNewsUseCase, logger);
+  const cronInterval = process.env.NEWS_CRON_INTERVAL || "*/30 * * * *";
+
+  logger.info("Running news job immediately on startup...");
+  try {
+    await saveNewsUseCase.execute();
+    logger.info("Initial news processing completed");
+  } catch (error) {
+    logger.error(
+      `Error in initial news processing: ${(error as Error).message}`
+    );
+  }
+
+  logger.info(`Jobs initialized successfully (scheduled: ${cronInterval})`);
 }

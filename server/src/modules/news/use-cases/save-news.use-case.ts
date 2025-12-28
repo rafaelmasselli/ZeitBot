@@ -15,9 +15,9 @@ export class SaveNewsUseCase {
   async execute(): Promise<NewsEntity[]> {
     try {
       this.logger.info("Starting news save process");
-      
+
       const news = await this.getNewsUseCase.execute();
-      
+
       const savedNews = await Promise.all(
         news.map(async (newsItem) => {
           try {
@@ -39,4 +39,3 @@ export class SaveNewsUseCase {
     }
   }
 }
-

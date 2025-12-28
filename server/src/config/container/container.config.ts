@@ -23,6 +23,7 @@ import {
   NewsCommand,
   PingCommand,
   WhatsAppController,
+  SendDailyMessagesUseCase,
 } from "@/modules/whatsapp";
 import { AppRoutes } from "@/routes/index.routes";
 
@@ -50,6 +51,7 @@ export function setupContainer(): void {
   container.registerSingleton(WhatsAppService);
   container.registerSingleton<CommandHandler>("CommandHandler", CommandHandler);
   container.registerSingleton(WhatsAppController);
+  container.registerSingleton(SendDailyMessagesUseCase);
 
   container.register<IWhatsAppCommand>("WhatsAppCommand", {
     useClass: HelpCommand,

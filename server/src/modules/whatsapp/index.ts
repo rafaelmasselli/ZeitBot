@@ -13,4 +13,9 @@ export * from './commands/ping.command';
 // Controllers
 export * from './controllers/whatsapp.controller';
 
+// Use Cases
+export * from './use-cases/send-daily-messages.use-case';
+
+// Jobs
+export * from './whatsapp.job';
 
