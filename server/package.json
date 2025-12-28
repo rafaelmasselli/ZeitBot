@@ -2,11 +2,11 @@
   "name": "zeitbot-clean-arch",
   "version": "1.0.0",
   "description": "ZeitBot com Clean Architecture",
-  "main": "dist/main/http/server.js",
+  "main": "dist/server.js",
   "scripts": {
     "build": "tsc && tsc-alias",
-    "start": "node dist/main/http/server.js",
-    "dev": "ts-node -r tsconfig-paths/register main/http/server.ts",
+    "start": "node dist/server.js",
+    "dev": "ts-node -r tsconfig-paths/register src/server.ts",
     "test": "jest"
   },
   "dependencies": {

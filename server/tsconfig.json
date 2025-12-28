@@ -8,21 +8,19 @@
     "strict": true,
     "skipLibCheck": true,
     "outDir": "./dist",
-    "rootDir": ".",
+    "rootDir": "./src",
     "sourceMap": true,
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "paths": {
-      "@domain/*": ["domain/*"],
-      "@infrastructure/*": ["infrastructure/*"],
-      "@modules/*": ["modules/*"],
-      "@shared/*": ["shared/*"],
-      "@main/*": ["main/*"]
+      "@/modules/*": ["modules/*"],
+      "@/shared/*": ["shared/*"],
+      "@/config/*": ["config/*"],
+      "@/routes/*": ["routes/*"]
     }
   },
-  "include": ["domain/**/*", "infrastructure/**/*", "main/**/*", "modules/**/*", "shared/**/*", "jobs/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts", "dist", "**/node_modules/**"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts", "dist"]
 }
-
