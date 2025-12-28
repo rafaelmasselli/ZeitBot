@@ -2,12 +2,15 @@ import { injectable, inject } from "tsyringe";
 import { ILogger } from "@/shared/logger/logger.interface";
 import { WhatsAppService } from "../services/whatsapp.service";
 import { GetNewsUseCase } from "@/modules/news/use-cases/get-news.use-case";
+import { ISubscriberRepository } from "../interfaces/subscriber.repository.interface";
 
 @injectable()
 export class SendDailyMessagesUseCase {
   constructor(
     @inject(WhatsAppService) private whatsAppService: WhatsAppService,
     @inject(GetNewsUseCase) private getNewsUseCase: GetNewsUseCase,
+    @inject("ISubscriberRepository")
+    private subscriberRepository: ISubscriberRepository,
     @inject("ILogger") private readonly logger: ILogger
   ) {}
 
@@ -15,11 +18,22 @@ export class SendDailyMessagesUseCase {
     try {
       this.logger.info("Starting daily WhatsApp messages");
 
-      const recipients =
-        process.env.WHATSAPP_DAILY_RECIPIENTS?.split(",") || [];
+      const subscribers = await this.subscriberRepository.findAllActive();
 
-      if (recipients.length === 0) {
-        this.logger.warn("No recipients configured for daily messages");
+      if (subscribers.length === 0) {
+        this.logger.warn("No active subscribers found");
+        return;
+      }
+
+      this.logger.info(`Found ${subscribers.length} active subscriber(s)`);
+
+      const currentHour = new Date().getHours();
+      const recipientsForCurrentHour = subscribers.filter(
+        (sub) => sub.preferred_hour === currentHour
+      );
+
+      if (recipientsForCurrentHour.length === 0) {
+        this.logger.info(`No subscribers configured for hour ${currentHour}`);
         return;
       }
 
@@ -43,21 +57,26 @@ export class SendDailyMessagesUseCase {
 
       message += "_Tenha um ótimo dia! 🤖_";
 
-      const sendPromises = recipients.map(async (recipient) => {
+      const sendPromises = recipientsForCurrentHour.map(async (subscriber) => {
         try {
-          const phoneNumber = recipient.trim();
-          await this.whatsAppService.sendMessage(phoneNumber, message);
-          this.logger.info(`Message sent to ${phoneNumber}`);
+          await this.whatsAppService.sendMessage(
+            subscriber.phone_number,
+            message
+          );
+          await this.subscriberRepository.update(subscriber.phone_number, {
+            last_message_sent: new Date(),
+          });
+          this.logger.info(`Message sent to ${subscriber.phone_number}`);
         } catch (error) {
           this.logger.error(
-            `Error sending message to ${recipient}: ${(error as Error).message}`
+            `Error sending message to ${subscriber.phone_number}: ${(error as Error).message}`
           );
         }
       });
 
       await Promise.all(sendPromises);
       this.logger.info(
-        `Daily messages sent successfully to ${recipients.length} recipient(s)`
+        `Daily messages sent successfully to ${recipientsForCurrentHour.length} recipient(s)`
       );
     } catch (error) {
       this.logger.error(

@@ -88,3 +88,4 @@ function createMockNews(title: string, platform: NewsPlatform): NewsEntity {
   return news;
 }
 
+

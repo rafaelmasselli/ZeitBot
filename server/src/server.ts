@@ -9,6 +9,7 @@ import { IConfig } from "@/shared/config/config.interface";
 import { WhatsAppController } from "@/modules/whatsapp";
 import { initializeJobs } from "@/modules/news/news.job";
 import { initializeWhatsAppJobs } from "@/modules/whatsapp/whatsapp.job";
+import { initializeAIJobs } from "@/modules/whatsapp/whatsapp-ai.job";
 
 async function bootstrap() {
   try {
@@ -32,6 +33,7 @@ async function bootstrap() {
 
     await initializeJobs();
     await initializeWhatsAppJobs();
+    await initializeAIJobs();
 
     // expressApp.listen(config.PORT, () => {
     //   logger.info(`Server running on port ${config.PORT}`);

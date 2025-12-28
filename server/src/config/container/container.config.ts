@@ -8,22 +8,35 @@ import { DatabaseService } from "@/config/database/connect";
 import {
   INewsRepository,
   INewsProvider,
+  INewsAnalyzer,
   NewsRepository,
   BBCNewsProvider,
   BrazilIndeedProvider,
   GetNewsUseCase,
   SaveNewsUseCase,
+  AnalyzeNewsUseCase,
+  GeminiNewsAnalyzer,
+  SimpleNewsAnalyzer,
+  OllamaNewsAnalyzer,
   NewsRoutes,
 } from "@/modules/news";
 import {
   IWhatsAppCommand,
+  ISubscriberRepository,
   WhatsAppService,
   CommandHandler,
   HelpCommand,
   NewsCommand,
-  PingCommand,
+  SubscribeCommand,
+  UnsubscribeCommand,
+  MySubscriptionCommand,
   WhatsAppController,
   SendDailyMessagesUseCase,
+  SendPersonalizedNewsUseCase,
+  SubscribeUserUseCase,
+  UnsubscribeUserUseCase,
+  GetSubscriberUseCase,
+  SubscriberRepository,
 } from "@/modules/whatsapp";
 import { AppRoutes } from "@/routes/index.routes";
 
@@ -47,11 +60,41 @@ export function setupContainer(): void {
 
   container.registerSingleton(GetNewsUseCase);
   container.registerSingleton(SaveNewsUseCase);
+  container.registerSingleton(AnalyzeNewsUseCase);
+
+  const aiProvider = process.env.AI_PROVIDER || "simple";
+  
+  if (aiProvider === "gemini") {
+    container.registerSingleton<INewsAnalyzer>(
+      "INewsAnalyzer",
+      GeminiNewsAnalyzer
+    );
+  } else if (aiProvider === "ollama") {
+    container.registerSingleton<INewsAnalyzer>(
+      "INewsAnalyzer",
+      OllamaNewsAnalyzer
+    );
+  } else {
+    container.registerSingleton<INewsAnalyzer>(
+      "INewsAnalyzer",
+      SimpleNewsAnalyzer
+    );
+  }
+
+  container.registerSingleton<ISubscriberRepository>(
+    "ISubscriberRepository",
+    SubscriberRepository
+  );
 
   container.registerSingleton(WhatsAppService);
   container.registerSingleton<CommandHandler>("CommandHandler", CommandHandler);
   container.registerSingleton(WhatsAppController);
+
   container.registerSingleton(SendDailyMessagesUseCase);
+  container.registerSingleton(SendPersonalizedNewsUseCase);
+  container.registerSingleton(SubscribeUserUseCase);
+  container.registerSingleton(UnsubscribeUserUseCase);
+  container.registerSingleton(GetSubscriberUseCase);
 
   container.register<IWhatsAppCommand>("WhatsAppCommand", {
     useClass: HelpCommand,
@@ -60,7 +103,13 @@ export function setupContainer(): void {
     useClass: NewsCommand,
   });
   container.register<IWhatsAppCommand>("WhatsAppCommand", {
-    useClass: PingCommand,
+    useClass: SubscribeCommand,
+  });
+  container.register<IWhatsAppCommand>("WhatsAppCommand", {
+    useClass: UnsubscribeCommand,
+  });
+  container.register<IWhatsAppCommand>("WhatsAppCommand", {
+    useClass: MySubscriptionCommand,
   });
 
   container.registerSingleton(NewsRoutes);

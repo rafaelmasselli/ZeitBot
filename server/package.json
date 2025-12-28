@@ -13,6 +13,7 @@
     "test:verbose": "jest --verbose"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@typegoose/typegoose": "^12.17.0",
     "@types/cheerio": "^1.0.0",
     "@types/cron": "^2.4.3",
