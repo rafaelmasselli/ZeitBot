@@ -17,7 +17,9 @@ export class NewsRecommendationService {
   ) {}
 
   async generateNewsEmbedding(news: NewsEntity): Promise<number[]> {
-    const text = `${news.title} ${news.description || ""} ${news.news_summary || ""}`;
+    const text = `${news.title} ${news.description || ""} ${
+      news.news_summary || ""
+    }`;
     return this.embeddingService.generateEmbedding(text);
   }
 
@@ -29,7 +31,10 @@ export class NewsRecommendationService {
     subscriber: SubscriberEntity,
     newsList: NewsEntity[]
   ): Promise<NewsRecommendation[]> {
-    if (!subscriber.preferences_embedding || subscriber.preferences_embedding.length === 0) {
+    if (
+      !subscriber.preferences_embedding ||
+      subscriber.preferences_embedding.length === 0
+    ) {
       this.logger.warn(
         `Subscriber ${subscriber.phone_number} has no preferences embedding, returning all news`
       );
@@ -112,4 +117,3 @@ export class NewsRecommendationService {
     return message;
   }
 }
-
