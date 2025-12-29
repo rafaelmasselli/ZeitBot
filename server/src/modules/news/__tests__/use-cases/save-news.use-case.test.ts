@@ -15,6 +15,7 @@ describe("SaveNewsUseCase", () => {
       create: jest.fn(),
       findLastNews: jest.fn(),
       findOneByLink: jest.fn(),
+      findAll: jest.fn(),
     };
 
     mockGetNewsUseCase = {

@@ -18,8 +18,7 @@
       "@/modules/*": ["modules/*"],
       "@/shared/*": ["shared/*"],
       "@/config/*": ["config/*"],
-      "@/routes/*": ["routes/*"],
-      "@/__tests__/*": ["__tests__/*"]
+      "@/routes/*": ["routes/*"]
     }
   },
   "include": ["src/**/*"],

@@ -38,5 +38,9 @@ export class NewsRepository implements INewsRepository {
   async findOneByLink(link: string): Promise<NewsEntity | null> {
     return this.newsModel.findOne({ link }).lean();
   }
+
+  async findAll(): Promise<NewsEntity[]> {
+    return this.newsModel.find().sort({ created_at: -1 }).lean();
+  }
 }
 

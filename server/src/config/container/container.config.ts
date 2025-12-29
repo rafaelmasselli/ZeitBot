@@ -14,7 +14,6 @@ import {
   BrazilIndeedProvider,
   GetNewsUseCase,
   SaveNewsUseCase,
-  AnalyzeNewsUseCase,
   GeminiNewsAnalyzer,
   SimpleNewsAnalyzer,
   OllamaNewsAnalyzer,
@@ -32,7 +31,6 @@ import {
   MySubscriptionCommand,
   WhatsAppController,
   SendDailyMessagesUseCase,
-  SendPersonalizedNewsUseCase,
   SubscribeUserUseCase,
   UnsubscribeUserUseCase,
   GetSubscriberUseCase,
@@ -60,19 +58,13 @@ export function setupContainer(): void {
 
   container.registerSingleton(GetNewsUseCase);
   container.registerSingleton(SaveNewsUseCase);
-  container.registerSingleton(AnalyzeNewsUseCase);
 
   const aiProvider = process.env.AI_PROVIDER || "simple";
-  
+
   if (aiProvider === "gemini") {
     container.registerSingleton<INewsAnalyzer>(
       "INewsAnalyzer",
       GeminiNewsAnalyzer
-    );
-  } else if (aiProvider === "ollama") {
-    container.registerSingleton<INewsAnalyzer>(
-      "INewsAnalyzer",
-      OllamaNewsAnalyzer
     );
   } else {
     container.registerSingleton<INewsAnalyzer>(
@@ -91,7 +83,6 @@ export function setupContainer(): void {
   container.registerSingleton(WhatsAppController);
 
   container.registerSingleton(SendDailyMessagesUseCase);
-  container.registerSingleton(SendPersonalizedNewsUseCase);
   container.registerSingleton(SubscribeUserUseCase);
   container.registerSingleton(UnsubscribeUserUseCase);
   container.registerSingleton(GetSubscriberUseCase);
