@@ -9,6 +9,7 @@ export * from './interfaces/news-analyzer.interface';
 // Use Cases
 export * from './use-cases/get-news.use-case';
 export * from './use-cases/save-news.use-case';
+export * from './use-cases/generate-news-embeddings.use-case';
 
 // Repositories
 export * from './repositories/news.repository';
@@ -27,4 +28,5 @@ export * from './routes/news.routes';
 
 // Jobs
 export * from './news.job';
+export * from './news-embeddings.job';
 

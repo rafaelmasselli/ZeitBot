@@ -35,11 +35,14 @@ export class NewsEntity {
   @prop()
   date!: Date;
 
-  @prop({ enum: NewsPlatform })
+  @prop()
   enterprise!: NewsPlatform;
 
   @prop({ type: () => [String] })
   topics!: string[];
+
+  @prop({ type: () => [Number] })
+  content_embedding?: number[];
 
   @prop()
   created_at!: Date;

@@ -31,11 +31,20 @@ export class SubscriberEntity {
   @prop({ type: () => [String], enum: NewsCategory, default: [NewsCategory.ALL] })
   preferred_categories!: NewsCategory[];
 
+  @prop()
+  preferences_description?: string;
+
+  @prop({ type: () => [Number] })
+  preferences_embedding?: number[];
+
   @prop({ default: true })
   is_active!: boolean;
 
   @prop({ default: 8 })
   preferred_hour!: number;
+
+  @prop({ default: 0.6 })
+  similarity_threshold!: number;
 
   @prop()
   last_message_sent?: Date;

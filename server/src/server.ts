@@ -8,8 +8,9 @@ import { IConfig } from "@/shared/config/config.interface";
 // import { AppRoutes } from "@/routes/index.routes";
 import { WhatsAppController } from "@/modules/whatsapp";
 import { initializeJobs } from "@/modules/news/news.job";
+import { startNewsEmbeddingsJob } from "@/modules/news/news-embeddings.job";
 import { initializeWhatsAppJobs } from "@/modules/whatsapp/whatsapp.job";
-import { initializeAIJobs } from "@/modules/whatsapp/whatsapp-ai.job";
+import { startWhatsAppAIRecommendationsJob } from "@/modules/whatsapp/whatsapp-ai-recommendations.job";
 
 async function bootstrap() {
   try {
@@ -32,8 +33,9 @@ async function bootstrap() {
     await whatsAppController.initialize();
 
     await initializeJobs();
+    startNewsEmbeddingsJob();
     await initializeWhatsAppJobs();
-    await initializeAIJobs();
+    startWhatsAppAIRecommendationsJob();
 
     // expressApp.listen(config.PORT, () => {
     //   logger.info(`Server running on port ${config.PORT}`);

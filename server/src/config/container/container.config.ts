@@ -6,6 +6,11 @@ import { IConfig } from "@/shared/config/config.interface";
 import { EnvConfig } from "@/shared/config/env.config";
 import { DatabaseService } from "@/config/database/connect";
 import {
+  IEmbeddingService,
+  OllamaEmbeddingService,
+  NewsRecommendationService,
+} from "@/shared/services";
+import {
   INewsRepository,
   INewsProvider,
   INewsAnalyzer,
@@ -14,6 +19,7 @@ import {
   BrazilIndeedProvider,
   GetNewsUseCase,
   SaveNewsUseCase,
+  GenerateNewsEmbeddingsUseCase,
   GeminiNewsAnalyzer,
   SimpleNewsAnalyzer,
   OllamaNewsAnalyzer,
@@ -29,11 +35,14 @@ import {
   SubscribeCommand,
   UnsubscribeCommand,
   MySubscriptionCommand,
+  PreferencesCommand,
   WhatsAppController,
   SendDailyMessagesUseCase,
+  SendAIRecommendationsUseCase,
   SubscribeUserUseCase,
   UnsubscribeUserUseCase,
   GetSubscriberUseCase,
+  UpdatePreferencesUseCase,
   SubscriberRepository,
 } from "@/modules/whatsapp";
 import { AppRoutes } from "@/routes/index.routes";
@@ -43,6 +52,12 @@ export function setupContainer(): void {
   container.registerSingleton<IConfig>("IConfig", EnvConfig);
 
   container.registerSingleton(DatabaseService);
+
+  container.registerSingleton<IEmbeddingService>(
+    "IEmbeddingService",
+    OllamaEmbeddingService
+  );
+  container.registerSingleton(NewsRecommendationService);
 
   container.registerSingleton<INewsRepository>(
     "INewsRepository",
@@ -58,6 +73,7 @@ export function setupContainer(): void {
 
   container.registerSingleton(GetNewsUseCase);
   container.registerSingleton(SaveNewsUseCase);
+  container.registerSingleton(GenerateNewsEmbeddingsUseCase);
 
   const aiProvider = process.env.AI_PROVIDER || "simple";
 
@@ -65,6 +81,11 @@ export function setupContainer(): void {
     container.registerSingleton<INewsAnalyzer>(
       "INewsAnalyzer",
       GeminiNewsAnalyzer
+    );
+  } else if (aiProvider === "ollama") {
+    container.registerSingleton<INewsAnalyzer>(
+      "INewsAnalyzer",
+      OllamaNewsAnalyzer
     );
   } else {
     container.registerSingleton<INewsAnalyzer>(
@@ -83,9 +104,11 @@ export function setupContainer(): void {
   container.registerSingleton(WhatsAppController);
 
   container.registerSingleton(SendDailyMessagesUseCase);
+  container.registerSingleton(SendAIRecommendationsUseCase);
   container.registerSingleton(SubscribeUserUseCase);
   container.registerSingleton(UnsubscribeUserUseCase);
   container.registerSingleton(GetSubscriberUseCase);
+  container.registerSingleton(UpdatePreferencesUseCase);
 
   container.register<IWhatsAppCommand>("WhatsAppCommand", {
     useClass: HelpCommand,
@@ -101,6 +124,9 @@ export function setupContainer(): void {
   });
   container.register<IWhatsAppCommand>("WhatsAppCommand", {
     useClass: MySubscriptionCommand,
+  });
+  container.register<IWhatsAppCommand>("WhatsAppCommand", {
+    useClass: PreferencesCommand,
   });
 
   container.registerSingleton(NewsRoutes);

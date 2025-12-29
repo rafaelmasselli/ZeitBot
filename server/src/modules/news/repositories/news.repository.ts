@@ -43,4 +43,3 @@ export class NewsRepository implements INewsRepository {
     return this.newsModel.find().sort({ created_at: -1 }).lean();
   }
 }
-

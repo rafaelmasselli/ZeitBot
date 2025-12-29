@@ -13,12 +13,16 @@ export * from "./commands/news.command";
 export * from "./commands/subscribe.command";
 export * from "./commands/unsubscribe.command";
 export * from "./commands/mysubscription.command";
+export * from "./commands/preferences.command";
 
 export * from "./controllers/whatsapp.controller";
 
 export * from "./use-cases/send-daily-messages.use-case";
+export * from "./use-cases/send-ai-recommendations.use-case";
 export * from "./use-cases/subscribe-user.use-case";
 export * from "./use-cases/unsubscribe-user.use-case";
 export * from "./use-cases/get-subscriber.use-case";
+export * from "./use-cases/update-preferences.use-case";
 
 export * from "./whatsapp.job";
+export * from "./whatsapp-ai-recommendations.job";

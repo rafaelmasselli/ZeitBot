@@ -20,6 +20,10 @@ export class SubscriberRepository implements ISubscriberRepository {
     return this.subscriberModel.findOne({ phone_number: phoneNumber }).lean();
   }
 
+  async findAll(): Promise<SubscriberEntity[]> {
+    return this.subscriberModel.find().lean();
+  }
+
   async findAllActive(): Promise<SubscriberEntity[]> {
     return this.subscriberModel.find({ is_active: true }).lean();
   }
