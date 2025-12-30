@@ -17,7 +17,7 @@ async function bootstrap() {
     const logger = container.resolve<ILogger>("ILogger");
     container.resolve<IConfig>("IConfig");
 
-    logger.info("Starting ZeitBot Clean Architecture application");
+    logger.info("Starting ZeitBot application");
 
     const databaseService = container.resolve(DatabaseService);
     await databaseService.connect();
