@@ -31,6 +31,7 @@ describe("SendDailyMessagesUseCase", () => {
     mockSubscriberRepository = {
       create: jest.fn(),
       findByPhone: jest.fn(),
+      findAll: jest.fn(),
       findAllActive: jest.fn(),
       update: jest.fn(),
       deactivate: jest.fn(),
@@ -39,7 +40,6 @@ describe("SendDailyMessagesUseCase", () => {
     sendDailyMessagesUseCase = new SendDailyMessagesUseCase(
       mockWhatsAppService,
       mockGetNewsUseCase,
-      mockSubscriberRepository,
       mockLogger
     );
   });

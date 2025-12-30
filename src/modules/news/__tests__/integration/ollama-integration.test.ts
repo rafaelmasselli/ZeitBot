@@ -3,6 +3,7 @@ import { OllamaNewsAnalyzer } from "../../services/ollama-news-analyzer.service"
 import { ILogger } from "@/shared/logger/logger.interface";
 import { NewsEntity, NewsPlatform } from "../../entities/news.entity";
 import axios from "axios";
+import { NewsCategory } from "@/modules/whatsapp/entities/subscriber.entity";
 
 const mockLogger: ILogger = {
   info: jest.fn(),
@@ -39,30 +40,32 @@ describe("Ollama Integration Test (Real)", () => {
     try {
       await axios.get("http://localhost:11434");
       isOllamaRunning = true;
-      console.log("✅ Ollama está rodando!");
+      console.log("[OK] Ollama is running!");
     } catch (error) {
       isOllamaRunning = false;
-      console.log("⚠️ Ollama NÃO está rodando. Testes serão pulados.");
-      console.log("💡 Para rodar testes: ollama serve");
+      console.log("[WARN] Ollama is NOT running. Tests will be skipped.");
+      console.log("[INFO] To run tests: ollama serve");
     }
   });
 
-  describe("Análise Real com LLama3", () => {
-    it.skipIf(!isOllamaRunning)(
-      "deve analisar notícia de tecnologia em português",
+  describe("Real Analysis with LLama3", () => {
+    (isOllamaRunning ? it : it.skip)(
+      "should analyze technology news in Portuguese",
       async () => {
         const news = createTestNews({
-          title: "Nova tecnologia de inteligência artificial revoluciona diagnóstico médico",
-          description: "Pesquisadores da universidade desenvolveram um sistema de IA capaz de detectar doenças com 95% de precisão em imagens médicas. A tecnologia promete revolucionar a medicina e salvar milhares de vidas.",
+          title:
+            "Nova tecnologia de inteligência artificial revoluciona diagnóstico médico",
+          description:
+            "Pesquisadores da universidade desenvolveram um sistema de IA capaz de detectar doenças com 95% de precisão em imagens médicas. A tecnologia promete revolucionar a medicina e salvar milhares de vidas.",
           link: "https://example.com/news/1",
         });
 
         const result = await analyzer.analyzeNews(news);
 
-        console.log("\n📊 Resultado da Análise:");
-        console.log("Categorias:", result.categories);
-        console.log("Relevância:", result.relevanceScore);
-        console.log("Resumo:", result.summary);
+        console.log("\n[TEST] Analysis Result:");
+        console.log("Categories:", result.categories);
+        console.log("Relevance:", result.relevanceScore);
+        console.log("Summary:", result.summary);
         console.log("Keywords:", result.keywords);
 
         expect(result.categories).toBeDefined();
@@ -75,20 +78,22 @@ describe("Ollama Integration Test (Real)", () => {
       60000
     );
 
-    it.skipIf(!isOllamaRunning)(
-      "deve analisar notícia de política em português",
+    (isOllamaRunning ? it : it.skip)(
+      "should analyze politics news in Portuguese",
       async () => {
         const news = createTestNews({
-          title: "Governo anuncia nova reforma tributária com mudanças no imposto",
-          description: "O presidente anunciou hoje uma reforma tributária que deve simplificar o sistema de impostos no país. A proposta será enviada ao congresso na próxima semana.",
+          title:
+            "Governo anuncia nova reforma tributária com mudanças no imposto",
+          description:
+            "O presidente anunciou hoje uma reforma tributária que deve simplificar o sistema de impostos no país. A proposta será enviada ao congresso na próxima semana.",
           link: "https://example.com/news/2",
         });
 
         const result = await analyzer.analyzeNews(news);
 
-        console.log("\n📊 Resultado da Análise (Política):");
-        console.log("Categorias:", result.categories);
-        console.log("Relevância:", result.relevanceScore);
+        console.log("\n[TEST] Analysis Result (Politics):");
+        console.log("Categories:", result.categories);
+        console.log("Relevance:", result.relevanceScore);
 
         expect(result.categories).toContain("politics");
         expect(result.summary).toBeTruthy();
@@ -96,20 +101,22 @@ describe("Ollama Integration Test (Real)", () => {
       60000
     );
 
-    it.skipIf(!isOllamaRunning)(
-      "deve analisar notícia em inglês",
+    (isOllamaRunning ? it : it.skip)(
+      "should analyze news in English",
       async () => {
         const news = createTestNews({
-          title: "New AI breakthrough in cancer detection announced by researchers",
-          description: "Scientists at MIT have developed a groundbreaking AI system that can detect cancer in medical scans with unprecedented accuracy. The system uses deep learning algorithms.",
+          title:
+            "New AI breakthrough in cancer detection announced by researchers",
+          description:
+            "Scientists at MIT have developed a groundbreaking AI system that can detect cancer in medical scans with unprecedented accuracy. The system uses deep learning algorithms.",
           link: "https://example.com/news/3",
         });
 
         const result = await analyzer.analyzeNews(news);
 
-        console.log("\n📊 Resultado da Análise (Inglês):");
-        console.log("Categorias:", result.categories);
-        console.log("Relevância:", result.relevanceScore);
+        console.log("\n[TEST] Analysis Result (English):");
+        console.log("Categories:", result.categories);
+        console.log("Relevance:", result.relevanceScore);
 
         expect(result.categories).toBeDefined();
         expect(result.summary).toBeTruthy();
@@ -117,29 +124,29 @@ describe("Ollama Integration Test (Real)", () => {
       60000
     );
 
-    it.skipIf(!isOllamaRunning)(
-      "deve analisar múltiplas notícias em batch",
+    (isOllamaRunning ? it : it.skip)(
+      "should analyze multiple news in batch",
       async () => {
         const newsList = [
           createTestNews({
-            title: "Time brasileiro vence campeonato mundial de futebol",
-            description: "Brasil sagra-se campeão...",
+            title: "Brazilian team wins world football championship",
+            description: "Brazil crowned champion...",
             link: "https://example.com/1",
           }),
           createTestNews({
-            title: "Bolsa de valores atinge recorde histórico",
-            description: "Mercado financeiro registra alta...",
+            title: "Stock market reaches historic record",
+            description: "Financial market registers high...",
             link: "https://example.com/2",
           }),
         ];
 
         const results = await analyzer.analyzeBatch(newsList);
 
-        console.log("\n📊 Análise em Batch:");
+        console.log("\n[TEST] Batch Analysis:");
         results.forEach((result, i) => {
-          console.log(`\nNotícia ${i + 1}:`);
-          console.log("Categorias:", result.categories);
-          console.log("Relevância:", result.relevanceScore);
+          console.log(`\nNews ${i + 1}:`);
+          console.log("Categories:", result.categories);
+          console.log("Relevance:", result.relevanceScore);
         });
 
         expect(results).toHaveLength(2);
@@ -150,9 +157,9 @@ describe("Ollama Integration Test (Real)", () => {
     );
   });
 
-  describe("Performance e Timeout", () => {
-    it.skipIf(!isOllamaRunning)(
-      "deve completar análise em menos de 30 segundos",
+  describe("Performance and Timeout", () => {
+    (isOllamaRunning ? it : it.skip)(
+      "should complete analysis in less than 30 seconds",
       async () => {
         const news = createTestNews({
           title: "Test news for performance",
@@ -164,7 +171,7 @@ describe("Ollama Integration Test (Real)", () => {
         await analyzer.analyzeNews(news);
         const duration = Date.now() - startTime;
 
-        console.log(`\n⏱️ Tempo de análise: ${duration}ms`);
+        console.log(`\n[PERF] Analysis time: ${duration}ms`);
 
         expect(duration).toBeLessThan(30000);
       },
@@ -172,24 +179,24 @@ describe("Ollama Integration Test (Real)", () => {
     );
   });
 
-  describe("Seleção de Melhores Notícias", () => {
-    it.skipIf(!isOllamaRunning)(
-      "deve selecionar as melhores notícias por categoria",
+  describe("Best News Selection", () => {
+    (isOllamaRunning ? it : it.skip)(
+      "should select best news by category",
       async () => {
         const newsList = [
           createTestNews({
-            title: "Avanço tecnológico em inteligência artificial",
-            description: "Nova IA desenvolvida...",
+            title: "Technological advancement in artificial intelligence",
+            description: "New AI developed...",
             link: "https://example.com/1",
           }),
           createTestNews({
-            title: "Atleta brasileiro ganha medalha de ouro",
-            description: "Competição olímpica...",
+            title: "Brazilian athlete wins gold medal",
+            description: "Olympic competition...",
             link: "https://example.com/2",
           }),
           createTestNews({
-            title: "Startup de tecnologia recebe investimento",
-            description: "Empresa tech...",
+            title: "Technology startup receives investment",
+            description: "Tech company...",
             link: "https://example.com/3",
           }),
         ];
@@ -197,35 +204,36 @@ describe("Ollama Integration Test (Real)", () => {
         const analyzed = await analyzer.analyzeBatch(newsList);
         const selected = analyzer.selectBestForCategories(
           analyzed,
-          ["technology"],
+          [NewsCategory.TECHNOLOGY],
           2
         );
 
-        console.log("\n🎯 Notícias Selecionadas (Technology):");
+        console.log("\n[TEST] Selected News (Technology):");
         selected.forEach((result, i) => {
           console.log(`${i + 1}. ${result.news.title}`);
-          console.log("   Categorias:", result.categories);
+          console.log("   Categories:", result.categories);
           console.log("   Score:", result.relevanceScore);
         });
 
         expect(selected.length).toBeLessThanOrEqual(2);
-        expect(selected.every((s) => s.categories.includes("technology"))).toBe(
-          true
-        );
+        expect(
+          selected.every((s) => s.categories.includes(NewsCategory.TECHNOLOGY))
+        ).toBe(true);
       },
       120000
     );
   });
+
+  afterAll(() => {
+    if (!isOllamaRunning) {
+      console.log("\n════════════════════════════════════════════");
+      console.log("[WARN] OLLAMA IS NOT RUNNING");
+      console.log("════════════════════════════════════════════");
+      console.log("\nTo run integration tests:");
+      console.log("1. Open a terminal and run: ollama serve");
+      console.log("2. Run tests again: npm test");
+      console.log("\nUnit tests still working!");
+      console.log("════════════════════════════════════════════\n");
+    }
+  });
 });
-
-if (!isOllamaRunning) {
-  console.log("\n════════════════════════════════════════════");
-  console.log("⚠️  OLLAMA NÃO ESTÁ RODANDO");
-  console.log("════════════════════════════════════════════");
-  console.log("\nPara rodar os testes de integração:");
-  console.log("1. Abra um terminal e execute: ollama serve");
-  console.log("2. Rode os testes novamente: npm test");
-  console.log("\nTestes unitários continuam funcionando! ✅");
-  console.log("════════════════════════════════════════════\n");
-}
-
