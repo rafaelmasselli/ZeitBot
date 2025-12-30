@@ -5,6 +5,8 @@ export const mockLogger: jest.Mocked<ILogger> = {
   error: jest.fn(),
   warn: jest.fn(),
   debug: jest.fn(),
+  setDefaultContext: jest.fn(),
+  clearDefaultContext: jest.fn(),
 };
 
 export const createMockLogger = (): jest.Mocked<ILogger> => ({
@@ -12,5 +14,7 @@ export const createMockLogger = (): jest.Mocked<ILogger> => ({
   error: jest.fn(),
   warn: jest.fn(),
   debug: jest.fn(),
+  setDefaultContext: jest.fn(),
+  clearDefaultContext: jest.fn(),
 });
 

@@ -9,6 +9,8 @@ const mockLogger: ILogger = {
   error: jest.fn(),
   warn: jest.fn(),
   debug: jest.fn(),
+  setDefaultContext: jest.fn(),
+  clearDefaultContext: jest.fn(),
 };
 
 const createTestNews = (overrides: Partial<NewsEntity> = {}): NewsEntity => ({

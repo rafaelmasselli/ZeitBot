@@ -31,6 +31,8 @@ describe("OllamaNewsAnalyzer", () => {
       error: jest.fn(),
       warn: jest.fn(),
       debug: jest.fn(),
+      setDefaultContext: jest.fn(),
+      clearDefaultContext: jest.fn(),
     } as jest.Mocked<ILogger>;
 
     process.env.OLLAMA_URL = "http://localhost:11434";
