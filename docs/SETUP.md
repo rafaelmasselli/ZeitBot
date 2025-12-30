@@ -134,8 +134,26 @@ rm -rf .wwebjs_auth/
 npm run dev
 ```
 
+## Monitoring Logs
+
+All logs are automatically saved to the `logs/` directory:
+
+```bash
+# View real-time logs
+tail -f logs/combined.log
+
+# View errors only
+tail -f logs/error.log
+
+# Pretty print JSON
+tail -f logs/combined.log | jq '.'
+```
+
+For more details, see [LOGS.md](LOGS.md).
+
 ## Next Steps
 
 - [ARCHITECTURE.md](ARCHITECTURE.md) - Understand the system
 - [WHATSAPP_MODULE.md](WHATSAPP_MODULE.md) - WhatsApp commands
 - [AI_SYSTEM.md](AI_SYSTEM.md) - How AI works
+- [LOGS.md](LOGS.md) - Logging system
