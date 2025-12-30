@@ -12,8 +12,9 @@ async function testEmbeddings() {
 
     setupContainer();
 
-    const embeddingService = container.resolve<IEmbeddingService>("IEmbeddingService");
-    const logger = container.resolve<ILogger>("ILogger");
+    const embeddingService =
+      container.resolve<IEmbeddingService>("IEmbeddingService");
+    container.resolve<ILogger>("ILogger");
 
     console.log("[1] Testing Embedding Generation");
     console.log("========================================");
@@ -32,7 +33,7 @@ async function testEmbeddings() {
     for (let i = 0; i < testTexts.length; i++) {
       const text = testTexts[i];
       console.log(`Text ${i + 1}: "${text}"`);
-      
+
       const startTime = Date.now();
       const embedding = await embeddingService.generateEmbedding(text);
       const duration = Date.now() - startTime;
@@ -41,9 +42,16 @@ async function testEmbeddings() {
 
       console.log(`   Dimensions: ${embedding.length}`);
       console.log(`   Time: ${duration}ms (${(duration / 1000).toFixed(1)}s)`);
-      console.log(`   First 10 values: [${embedding.slice(0, 10).map(v => v.toFixed(3)).join(", ")}...]`);
-      
-      const magnitude = Math.sqrt(embedding.reduce((sum, val) => sum + val * val, 0));
+      console.log(
+        `   First 10 values: [${embedding
+          .slice(0, 10)
+          .map((v) => v.toFixed(3))
+          .join(", ")}...]`
+      );
+
+      const magnitude = Math.sqrt(
+        embedding.reduce((sum, val) => sum + val * val, 0)
+      );
       console.log(`   Vector magnitude: ${magnitude.toFixed(3)}`);
       console.log("");
     }
@@ -69,7 +77,7 @@ async function testEmbeddings() {
       const idx1 = comparison[0];
       const idx2 = comparison[1];
       const description = comparison[2];
-      
+
       const similarity = embeddingService.calculateSimilarity(
         embeddings[idx1].vector,
         embeddings[idx2].vector
@@ -100,12 +108,20 @@ async function testEmbeddings() {
 
     console.log("Generating embeddings for 3 texts in batch...");
     const batchStartTime = Date.now();
-    const batchEmbeddings = await embeddingService.generateBatchEmbeddings(batchTexts);
+    const batchEmbeddings = await embeddingService.generateBatchEmbeddings(
+      batchTexts
+    );
     const batchDuration = Date.now() - batchStartTime;
 
     console.log(`   [OK] Generated ${batchEmbeddings.length} embeddings`);
-    console.log(`   Total time: ${batchDuration}ms (${(batchDuration / 1000).toFixed(1)}s)`);
-    console.log(`   Average per text: ${(batchDuration / batchTexts.length).toFixed(0)}ms`);
+    console.log(
+      `   Total time: ${batchDuration}ms (${(batchDuration / 1000).toFixed(
+        1
+      )}s)`
+    );
+    console.log(
+      `   Average per text: ${(batchDuration / batchTexts.length).toFixed(0)}ms`
+    );
     console.log("");
 
     console.log("========================================");
@@ -113,7 +129,8 @@ async function testEmbeddings() {
     console.log("========================================");
     console.log("");
 
-    const userPreference = "Gosto de tecnologia, programação, inteligência artificial e inovação";
+    const userPreference =
+      "Gosto de tecnologia, programação, inteligência artificial e inovação";
     const newsOptions = [
       "OpenAI lança novo modelo GPT-5 com capacidades avançadas de raciocínio",
       "Governo anuncia novo pacote de medidas econômicas para 2025",
@@ -127,7 +144,9 @@ async function testEmbeddings() {
     console.log("");
 
     console.log("Generating embedding for user preference...");
-    const prefEmbedding = await embeddingService.generateEmbedding(userPreference);
+    const prefEmbedding = await embeddingService.generateEmbedding(
+      userPreference
+    );
     console.log(`   [OK] Generated (${prefEmbedding.length} dimensions)`);
     console.log("");
 
@@ -138,7 +157,10 @@ async function testEmbeddings() {
 
     for (const news of newsOptions) {
       const newsEmbedding = await embeddingService.generateEmbedding(news);
-      const similarity = embeddingService.calculateSimilarity(prefEmbedding, newsEmbedding);
+      const similarity = embeddingService.calculateSimilarity(
+        prefEmbedding,
+        newsEmbedding
+      );
       newsResults.push({ text: news, score: similarity });
     }
 
@@ -148,7 +170,7 @@ async function testEmbeddings() {
       const percentage = (result.score * 100).toFixed(1);
       const bar = "█".repeat(Math.max(0, Math.floor(result.score * 50)));
       const match = result.score >= 0.6 ? "[SEND]" : "[SKIP]";
-      
+
       console.log(`${index + 1}. ${match} ${percentage}%`);
       console.log(`   ${bar}`);
       console.log(`   "${result.text}"`);
@@ -160,14 +182,21 @@ async function testEmbeddings() {
     console.log("========================================");
     console.log("");
 
-    const totalTexts = testTexts.length + batchTexts.length + 1 + newsOptions.length;
+    const totalTexts =
+      testTexts.length + batchTexts.length + 1 + newsOptions.length;
     const avgVectorSize = 4096 * 4; // 4 bytes per float32
     const totalMemory = totalTexts * avgVectorSize;
 
     console.log(`Total embeddings generated: ${totalTexts}`);
     console.log(`Vector size: 4096 dimensions`);
     console.log(`Memory per vector: ${(avgVectorSize / 1024).toFixed(2)} KB`);
-    console.log(`Total memory used: ${(totalMemory / 1024).toFixed(2)} KB (${(totalMemory / 1024 / 1024).toFixed(2)} MB)`);
+    console.log(
+      `Total memory used: ${(totalMemory / 1024).toFixed(2)} KB (${(
+        totalMemory /
+        1024 /
+        1024
+      ).toFixed(2)} MB)`
+    );
     console.log("");
 
     console.log("========================================");
@@ -190,4 +219,3 @@ async function testEmbeddings() {
 }
 
 testEmbeddings();
-

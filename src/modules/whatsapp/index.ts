@@ -24,5 +24,4 @@ export * from "./use-cases/unsubscribe-user.use-case";
 export * from "./use-cases/get-subscriber.use-case";
 export * from "./use-cases/update-preferences.use-case";
 
-export * from "./whatsapp.job";
-export * from "./whatsapp-ai-recommendations.job";
+export * from "./jobs";
