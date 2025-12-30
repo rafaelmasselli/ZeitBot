@@ -15,7 +15,6 @@ export class HealthRoutes {
   private healthCheck(req: Request, res: Response): void {
     res.json({
       status: "ok",
-      message: "ZeitBot Clean Architecture is running!",
       timestamp: new Date().toISOString(),
     });
   }
@@ -24,4 +23,3 @@ export class HealthRoutes {
     return this.router;
   }
 }
-

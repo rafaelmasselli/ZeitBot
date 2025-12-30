@@ -1,0 +1,98 @@
+version: "3.8"
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:6.0
+    container_name: zeitbot-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: zeitbot
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+    networks:
+      - zeitbot-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/zeitbot --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Ollama (LLama3)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: zeitbot-ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - zeitbot-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+  # Ollama Model Loader (runs once to pull LLama3)
+  ollama-setup:
+    image: ollama/ollama:latest
+    container_name: zeitbot-ollama-setup
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - zeitbot-network
+    depends_on:
+      - ollama
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        echo "Waiting for Ollama service to be fully ready..."
+        echo "This may take up to 60 seconds..."
+        sleep 10
+        
+        echo "Checking Ollama connection..."
+        RETRY_COUNT=0
+        MAX_RETRIES=30
+        until curl -f http://ollama:11434 >/dev/null 2>&1; do
+          RETRY_COUNT=$$((RETRY_COUNT + 1))
+          if [ $$RETRY_COUNT -ge $$MAX_RETRIES ]; then
+            echo "ERROR: Ollama service did not start in time"
+            exit 1
+          fi
+          echo "Waiting for Ollama API... (attempt $$RETRY_COUNT/$$MAX_RETRIES)"
+          sleep 5
+        done
+        
+        echo ""
+        echo "Ollama is ready! Starting LLama3 download..."
+        echo "This will take 5-15 minutes (~4GB download)"
+        echo ""
+        
+        OLLAMA_HOST=http://ollama:11434 ollama pull llama3
+        
+        echo ""
+        echo "Download complete! Verifying..."
+        OLLAMA_HOST=http://ollama:11434 ollama list
+        echo ""
+        echo "LLama3 model ready!"
+    restart: "no"
+
+networks:
+  zeitbot-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+    driver: local
+  mongodb_config:
+    driver: local
+  ollama_data:
+    driver: local
