@@ -1,6 +1,6 @@
 import cron from "node-cron";
 import { container } from "tsyringe";
-import { SendAIRecommendationsUseCase } from "./use-cases/send-ai-recommendations.use-case";
+import { SendAIRecommendationsUseCase } from "../use-cases/send-ai-recommendations.use-case";
 import { GenerateNewsEmbeddingsUseCase } from "@/modules/news/use-cases/generate-news-embeddings.use-case";
 import { ILogger } from "@/shared/logger/logger.interface";
 import { IConfig } from "@/shared/config/config.interface";

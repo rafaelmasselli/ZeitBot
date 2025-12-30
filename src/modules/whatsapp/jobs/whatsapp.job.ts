@@ -1,5 +1,5 @@
 import { container } from "tsyringe";
-import { SendDailyMessagesUseCase } from "./use-cases/send-daily-messages.use-case";
+import { SendDailyMessagesUseCase } from "../use-cases/send-daily-messages.use-case";
 import { ILogger } from "@/shared/logger/logger.interface";
 import { CronJob } from "cron";
 

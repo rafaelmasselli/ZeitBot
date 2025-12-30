@@ -1,6 +1,6 @@
 import cron from "node-cron";
 import { container } from "tsyringe";
-import { GenerateNewsEmbeddingsUseCase } from "./use-cases/generate-news-embeddings.use-case";
+import { GenerateNewsEmbeddingsUseCase } from "../use-cases/generate-news-embeddings.use-case";
 import { ILogger } from "@/shared/logger/logger.interface";
 import { IConfig } from "@/shared/config/config.interface";
 
@@ -10,9 +10,7 @@ export function startNewsEmbeddingsJob(): void {
 
   const cronInterval = config.NEWS_EMBEDDINGS_CRON_INTERVAL || "*/10 * * * *";
 
-  logger.info(
-    `News Embeddings Job scheduled with interval: ${cronInterval}`
-  );
+  logger.info(`News Embeddings Job scheduled with interval: ${cronInterval}`);
 
   const executeJob = async () => {
     try {
@@ -34,4 +32,3 @@ export function startNewsEmbeddingsJob(): void {
   logger.info("Executing news embeddings job immediately on startup...");
   setTimeout(executeJob, 8000);
 }
-

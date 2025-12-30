@@ -1,5 +1,5 @@
 import { container } from "tsyringe";
-import { SaveNewsUseCase } from "./use-cases/save-news.use-case";
+import { SaveNewsUseCase } from "../use-cases/save-news.use-case";
 import { ILogger } from "@/shared/logger/logger.interface";
 import { CronJob } from "cron";
 

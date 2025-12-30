@@ -1,10 +1,10 @@
 import { container } from "tsyringe";
-import { SendPersonalizedNewsUseCase } from "./use-cases/send-personalized-news.use-case";
+import { SendAIRecommendationsUseCase } from "../use-cases/send-ai-recommendations.use-case";
 import { ILogger } from "@/shared/logger/logger.interface";
 import { CronJob } from "cron";
 
 export function createPersonalizedNewsJob(
-  sendPersonalizedNewsUseCase: SendPersonalizedNewsUseCase,
+  sendAIRecommendationsUseCase: SendAIRecommendationsUseCase,
   logger: ILogger
 ): CronJob {
   const cronInterval = process.env.WHATSAPP_CRON_INTERVAL || "0 8 * * *";
@@ -13,12 +13,12 @@ export function createPersonalizedNewsJob(
     cronInterval,
     async () => {
       try {
-        logger.info("Starting scheduled personalized news delivery");
-        await sendPersonalizedNewsUseCase.execute();
-        logger.info("Scheduled personalized news delivery completed");
+        logger.info("Starting scheduled AI recommendations delivery");
+        await sendAIRecommendationsUseCase.execute();
+        logger.info("Scheduled AI recommendations delivery completed");
       } catch (error) {
         logger.error(
-          `Error in scheduled personalized news: ${(error as Error).message}`
+          `Error in scheduled AI recommendations: ${(error as Error).message}`
         );
       }
     },
@@ -29,12 +29,12 @@ export function createPersonalizedNewsJob(
 }
 
 export async function initializeAIJobs(): Promise<void> {
-  const sendPersonalizedNewsUseCase = container.resolve(
-    SendPersonalizedNewsUseCase
+  const sendAIRecommendationsUseCase = container.resolve(
+    SendAIRecommendationsUseCase
   );
   const logger = container.resolve<ILogger>("ILogger");
 
-  createPersonalizedNewsJob(sendPersonalizedNewsUseCase, logger);
+  createPersonalizedNewsJob(sendAIRecommendationsUseCase, logger);
   const cronInterval = process.env.WHATSAPP_CRON_INTERVAL || "0 8 * * *";
 
   logger.info(
