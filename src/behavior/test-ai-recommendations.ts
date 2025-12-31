@@ -19,7 +19,7 @@ async function testAIRecommendations() {
 
     setupContainer();
 
-    const logger = container.resolve<ILogger>("ILogger");
+    container.resolve<ILogger>("ILogger");
     const databaseService = container.resolve(DatabaseService);
 
     console.log("[1] Connecting to MongoDB...");
@@ -29,9 +29,7 @@ async function testAIRecommendations() {
 
     const newsRepository =
       container.resolve<INewsRepository>("INewsRepository");
-    const subscriberRepository = container.resolve<ISubscriberRepository>(
-      "ISubscriberRepository"
-    );
+    container.resolve<ISubscriberRepository>("ISubscriberRepository");
     const recommendationService = container.resolve(NewsRecommendationService);
 
     console.log("[2] Creating test subscriber...");

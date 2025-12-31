@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { ILogger } from "@/shared/logger/logger.interface";
 
 export class AppError extends Error {
@@ -12,12 +12,7 @@ export class AppError extends Error {
 }
 
 export function errorHandler(logger: ILogger) {
-  return (
-    error: Error,
-    _req: Request,
-    res: Response,
-    _next: NextFunction
-  ): void => {
+  return (error: Error, _req: Request, res: Response): void => {
     logger.error(`Error: ${error.message}`);
 
     if (error instanceof AppError) {
@@ -34,4 +29,3 @@ export function errorHandler(logger: ILogger) {
     });
   };
 }
-

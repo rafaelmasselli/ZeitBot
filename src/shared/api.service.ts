@@ -27,7 +27,7 @@ export abstract class ApiService {
 
   protected async post<T>(
     url: string,
-    data?: any,
+    data?: unknown,
     config?: AxiosRequestConfig
   ): Promise<T> {
     const response = await this.client.post<T>(url, data, config);
