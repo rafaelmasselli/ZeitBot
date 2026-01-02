@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import mongoose from "mongoose";
 import { injectable, inject } from "tsyringe";
-import { IConfig } from "@/shared/config/config.interface";
+import { IConfig } from "@/config/env/config.interface";
 import { ILogger } from "@/shared/logger/logger.interface";
 
 @injectable()

@@ -1,9 +1,9 @@
 import cron from "node-cron";
 import { container } from "tsyringe";
-import { SendAIRecommendationsUseCase } from "../use-cases/send-ai-recommendations.use-case";
-import { GenerateNewsEmbeddingsUseCase } from "@/modules/news/use-cases/generate-news-embeddings.use-case";
+import { SendAIRecommendationsUseCase } from "../features/notifications/use-cases/send-ai-recommendations.use-case";
+import { GenerateNewsEmbeddingsUseCase } from "@/modules/news/features/embeddings/use-cases/generate-news-embeddings.use-case";
 import { ILogger } from "@/shared/logger/logger.interface";
-import { IConfig } from "@/shared/config/config.interface";
+import { IConfig } from "@/config/env/config.interface";
 
 export function startWhatsAppAIRecommendationsJob(): void {
   const logger = container.resolve<ILogger>("ILogger");

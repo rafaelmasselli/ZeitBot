@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import { OllamaNewsAnalyzer } from "../../services/ollama-news-analyzer.service";
+import { OllamaNewsAnalyzer } from "../../features/analysis/services/ollama-news-analyzer.service";
 import { ILogger } from "@/shared/logger/logger.interface";
 import { NewsEntity, NewsPlatform } from "../../entities/news.entity";
 import axios from "axios";
-import { NewsCategory } from "@/modules/whatsapp/entities/subscriber.entity";
+import { NewsCategory } from "@/shared/entities/user.entity";
 
 const mockLogger: ILogger = {
   info: jest.fn(),

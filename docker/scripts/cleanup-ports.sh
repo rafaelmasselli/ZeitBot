@@ -48,3 +48,4 @@ echo ""
 echo "Now you can run:"
 echo "  ./scripts/start-services.sh"
 
+

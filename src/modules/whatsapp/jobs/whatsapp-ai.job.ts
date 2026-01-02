@@ -1,5 +1,5 @@
 import { container } from "tsyringe";
-import { SendAIRecommendationsUseCase } from "../use-cases/send-ai-recommendations.use-case";
+import { SendAIRecommendationsUseCase } from "../features/notifications/use-cases/send-ai-recommendations.use-case";
 import { ILogger } from "@/shared/logger/logger.interface";
 import { CronJob } from "cron";
 

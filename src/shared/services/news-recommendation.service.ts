@@ -2,7 +2,7 @@ import { injectable, inject } from "tsyringe";
 import { IEmbeddingService } from "./embedding.interface";
 import { ILogger } from "../logger/logger.interface";
 import { NewsEntity } from "@/modules/news/entities/news.entity";
-import { SubscriberEntity } from "@/modules/whatsapp/entities/subscriber.entity";
+import { UserEntity } from "@/shared/entities/user.entity";
 
 export interface NewsRecommendation {
   news: NewsEntity;
@@ -28,15 +28,15 @@ export class NewsRecommendationService {
   }
 
   async recommendNewsForSubscriber(
-    subscriber: SubscriberEntity,
+    user: UserEntity,
     newsList: NewsEntity[]
   ): Promise<NewsRecommendation[]> {
     if (
-      !subscriber.preferences_embedding ||
-      subscriber.preferences_embedding.length === 0
+      !user.preferences_embedding ||
+      user.preferences_embedding.length === 0
     ) {
       this.logger.warn(
-        `Subscriber ${subscriber.phone_number} has no preferences embedding, returning all news`
+        `User ${user.phone_number} has no preferences embedding, returning all news`
       );
       return newsList.map((news) => ({
         news,
@@ -53,7 +53,7 @@ export class NewsRecommendationService {
       }
 
       const similarity = this.embeddingService.calculateSimilarity(
-        subscriber.preferences_embedding,
+        user.preferences_embedding,
         news.content_embedding
       );
 
@@ -63,7 +63,7 @@ export class NewsRecommendationService {
       });
     }
 
-    const threshold = subscriber.similarity_threshold || 0.6;
+    const threshold = user.similarity_threshold || 0.6;
     const filtered = recommendations.filter(
       (rec) => rec.similarityScore >= threshold
     );
@@ -73,24 +73,24 @@ export class NewsRecommendationService {
     );
 
     this.logger.info(
-      `Recommended ${sorted.length} news for subscriber ${subscriber.phone_number} (threshold: ${threshold})`
+      `Recommended ${sorted.length} news for user ${user.phone_number} (threshold: ${threshold})`
     );
 
     return sorted;
   }
 
   async recommendNewsForAllSubscribers(
-    subscribers: SubscriberEntity[],
+    users: UserEntity[],
     newsList: NewsEntity[]
   ): Promise<Map<string, NewsRecommendation[]>> {
     const recommendationsMap = new Map<string, NewsRecommendation[]>();
 
-    for (const subscriber of subscribers) {
+    for (const user of users) {
       const recommendations = await this.recommendNewsForSubscriber(
-        subscriber,
+        user,
         newsList
       );
-      recommendationsMap.set(subscriber.phone_number, recommendations);
+      recommendationsMap.set(user.phone_number, recommendations);
     }
 
     return recommendationsMap;
@@ -98,20 +98,20 @@ export class NewsRecommendationService {
 
   formatRecommendationMessage(recommendations: NewsRecommendation[]): string {
     if (recommendations.length === 0) {
-      return "No news matches your preferences at the moment. 📰";
+      return "No news matches your preferences at the moment.";
     }
 
-    let message = `📰 *Personalized News for You* 📰\n\n`;
+    let message = `*Personalized News for You* \n\n`;
     message += `Found ${recommendations.length} news based on your interests:\n\n`;
 
     recommendations.slice(0, 5).forEach((rec, index) => {
       const scorePercent = (rec.similarityScore * 100).toFixed(0);
       message += `*${index + 1}.* ${rec.news.title}\n`;
-      message += `🎯 Match: ${scorePercent}%\n`;
+      message += `Match: ${scorePercent}%\n`;
       if (rec.news.news_summary) {
-        message += `📝 ${rec.news.news_summary}\n`;
+        message += `${rec.news.news_summary}\n`;
       }
-      message += `🔗 ${rec.news.link}\n\n`;
+      message += `${rec.news.link}\n\n`;
     });
 
     return message;
