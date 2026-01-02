@@ -1,5 +1,5 @@
 import { container } from "tsyringe";
-import { SendDailyMessagesUseCase } from "../use-cases/send-daily-messages.use-case";
+import { SendDailyMessagesUseCase } from "../features/notifications/use-cases/send-daily-messages.use-case";
 import { ILogger } from "@/shared/logger/logger.interface";
 import { CronJob } from "cron";
 
@@ -34,16 +34,6 @@ export async function initializeWhatsAppJobs(): Promise<void> {
 
   createWhatsAppJob(sendDailyMessagesUseCase, logger);
   const cronInterval = process.env.WHATSAPP_CRON_INTERVAL || "0 8 * * *";
-
-  // logger.info("Running WhatsApp job immediately on startup...");
-  // try {
-  //   await sendDailyMessagesUseCase.execute();
-  //   logger.info("Initial WhatsApp messages sent");
-  // } catch (error) {
-  //   logger.error(
-  //     `Error in initial WhatsApp messages: ${(error as Error).message}`
-  //   );
-  // }
 
   logger.info(
     `WhatsApp jobs initialized successfully (scheduled: ${cronInterval})`

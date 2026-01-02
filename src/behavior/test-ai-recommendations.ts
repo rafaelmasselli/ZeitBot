@@ -3,13 +3,13 @@ import { setupContainer } from "@/config/container/container.config";
 import { container } from "tsyringe";
 import { DatabaseService } from "@/config/database/connect";
 import { INewsRepository } from "@/modules/news/interfaces/news.repository.interface";
-import { ISubscriberRepository } from "@/modules/whatsapp/interfaces/subscriber.repository.interface";
+import { UserRepository } from "@/shared/repositories/user.repository";
 import { NewsRecommendationService } from "@/shared/services/news-recommendation.service";
 import { ILogger } from "@/shared/logger/logger.interface";
 import {
-  SubscriberEntity,
+  UserEntity,
   NewsCategory,
-} from "@/modules/whatsapp/entities/subscriber.entity";
+} from "@/shared/entities/user.entity";
 
 async function testAIRecommendations() {
   try {
@@ -29,11 +29,11 @@ async function testAIRecommendations() {
 
     const newsRepository =
       container.resolve<INewsRepository>("INewsRepository");
-    container.resolve<ISubscriberRepository>("ISubscriberRepository");
+    container.resolve(UserRepository);
     const recommendationService = container.resolve(NewsRecommendationService);
 
-    console.log("[2] Creating test subscriber...");
-    const testSubscriber: SubscriberEntity = {
+    console.log("[2] Creating test user...");
+    const testUser: UserEntity = {
       phone_number: "5511999999999",
       name: "Test User",
       preferred_categories: [NewsCategory.TECHNOLOGY],
@@ -42,15 +42,17 @@ async function testAIRecommendations() {
       is_active: true,
       preferred_hour: 8,
       similarity_threshold: 0.5,
+      preferred_language: "portuguese",
+      registration_step: "completed" as any,
       created_at: new Date(),
       updated_at: new Date(),
     };
 
     console.log("   Generating embedding for preferences...");
     const embedding = await recommendationService.generatePreferencesEmbedding(
-      testSubscriber.preferences_description!
+      testUser.preferences_description!
     );
-    testSubscriber.preferences_embedding = embedding;
+    testUser.preferences_embedding = embedding;
     console.log(`   [OK] Embedding generated (${embedding.length} dimensions)`);
     console.log("");
 
@@ -76,14 +78,14 @@ async function testAIRecommendations() {
     const startTime = Date.now();
     const recommendations =
       await recommendationService.recommendNewsForSubscriber(
-        testSubscriber,
+        testUser,
         newsWithEmbeddings
       );
     const duration = Date.now() - startTime;
 
     console.log(`   [OK] Processed in ${duration}ms`);
     console.log(
-      `   [OK] Found ${recommendations.length} recommendations (threshold: ${testSubscriber.similarity_threshold})`
+      `   [OK] Found ${recommendations.length} recommendations (threshold: ${testUser.similarity_threshold})`
     );
     console.log("");
 

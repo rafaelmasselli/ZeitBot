@@ -1,8 +1,8 @@
 import cron from "node-cron";
 import { container } from "tsyringe";
-import { GenerateNewsEmbeddingsUseCase } from "../use-cases/generate-news-embeddings.use-case";
+import { GenerateNewsEmbeddingsUseCase } from "../features/embeddings/use-cases/generate-news-embeddings.use-case";
 import { ILogger } from "@/shared/logger/logger.interface";
-import { IConfig } from "@/shared/config/config.interface";
+import { IConfig } from "@/config/env/config.interface";
 
 export function startNewsEmbeddingsJob(): void {
   const logger = container.resolve<ILogger>("ILogger");

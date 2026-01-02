@@ -8,7 +8,7 @@ export interface LogContext {
   requestId?: string;
   newsId?: string;
   subscriberId?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface ILogger {
@@ -19,4 +19,3 @@ export interface ILogger {
   setDefaultContext(context: LogContext): void;
   clearDefaultContext(): void;
 }
-
