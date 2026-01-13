@@ -1,5 +1,5 @@
-import { CommandHandler } from "../../services/command.handler";
-import { IWhatsAppCommand } from "../../interfaces/whatsapp.interfaces";
+import { CommandHandler } from "../../features/commands/handlers/command.handler";
+import { IWhatsAppCommand } from "../../features/commands/interfaces/command.interface";
 import { Message } from "whatsapp-web.js";
 import { createMockLogger } from "@/__tests__/mocks/logger.mock";
 

@@ -1,15 +1,13 @@
-import { SendDailyMessagesUseCase } from "../../use-cases/send-daily-messages.use-case";
+import { SendDailyMessagesUseCase } from "../../features/notifications/use-cases/send-daily-messages.use-case";
 import { WhatsAppService } from "../../services/whatsapp.service";
-import { GetNewsUseCase } from "@/modules/news/use-cases/get-news.use-case";
+import { GetNewsUseCase } from "@/modules/news/features/storage/use-cases/get-news.use-case";
 import { NewsEntity, NewsPlatform } from "@/modules/news/entities/news.entity";
-import { ISubscriberRepository } from "../../interfaces/subscriber.repository.interface";
 import { createMockLogger } from "@/__tests__/mocks/logger.mock";
 
 describe("SendDailyMessagesUseCase", () => {
   let sendDailyMessagesUseCase: SendDailyMessagesUseCase;
   let mockWhatsAppService: jest.Mocked<WhatsAppService>;
   let mockGetNewsUseCase: jest.Mocked<GetNewsUseCase>;
-  let mockSubscriberRepository: jest.Mocked<ISubscriberRepository>;
   const mockLogger = createMockLogger();
 
   const originalEnv = process.env;
@@ -27,15 +25,6 @@ describe("SendDailyMessagesUseCase", () => {
     mockGetNewsUseCase = {
       execute: jest.fn(),
     } as any;
-
-    mockSubscriberRepository = {
-      create: jest.fn(),
-      findByPhone: jest.fn(),
-      findAll: jest.fn(),
-      findAllActive: jest.fn(),
-      update: jest.fn(),
-      deactivate: jest.fn(),
-    };
 
     sendDailyMessagesUseCase = new SendDailyMessagesUseCase(
       mockWhatsAppService,
