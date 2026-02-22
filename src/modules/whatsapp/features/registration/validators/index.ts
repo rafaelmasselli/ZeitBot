@@ -1,0 +1,2 @@
+export * from "./categories.validator";
+

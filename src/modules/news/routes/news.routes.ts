@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import { injectable, inject } from "tsyringe";
 import { ILogger } from "@/shared/logger/logger.interface";
-import { GetNewsUseCase } from "../use-cases/get-news.use-case";
+import { GetNewsUseCase } from "../features/storage/use-cases/get-news.use-case";
 
 @injectable()
 export class NewsRoutes {
@@ -19,7 +19,7 @@ export class NewsRoutes {
     this.router.get("/", this.getNews.bind(this));
   }
 
-  private async getNews(req: Request, res: Response): Promise<void> {
+  private async getNews(_req: Request, res: Response): Promise<void> {
     try {
       const news = await this.getNewsUseCase.execute();
       res.status(200).json({
@@ -28,9 +28,7 @@ export class NewsRoutes {
         data: news,
       });
     } catch (error) {
-      this.logger.error(
-        `Error in news endpoint: ${(error as Error).message}`
-      );
+      this.logger.error(`Error in news endpoint: ${(error as Error).message}`);
       res.status(500).json({
         success: false,
         error: (error as Error).message,
@@ -42,4 +40,3 @@ export class NewsRoutes {
     return this.router;
   }
 }
-

@@ -1,0 +1,52 @@
+system: |
+  You are an assistant specialized in identifying news categories based on user interests.
+  You must analyze the message and return ONLY valid categories and detect the language.
+
+prompt_template: |
+  {system}
+
+  Available categories: {available_categories}
+  Supported languages: portuguese, english, spanish, french, german, italian, chinese, japanese
+
+  User message: "{user_message}"
+
+  TASK:
+  1. Identify which news categories the user wants to receive
+  2. Identify the language the user is using
+  3. If mentioning "tudo", "todas", "all", "everything" or similar, return only ["all"]
+
+  Respond ONLY with a valid JSON:
+  {{"categories": ["category1"], "language": "detected_language"}}
+
+  Response:
+
+response_schema:
+  type: object
+  required:
+    - categories
+    - language
+  properties:
+    categories:
+      type: array
+      items:
+        type: string
+        enum:
+          - technology
+          - politics
+          - sports
+          - economy
+          - health
+          - entertainment
+          - world
+          - all
+    language:
+      type: string
+      enum:
+        - portuguese
+        - english
+        - spanish
+        - french
+        - german
+        - italian
+        - chinese
+        - japanese

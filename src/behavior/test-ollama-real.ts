@@ -3,7 +3,7 @@ import { setupContainer } from "@/config/container/container.config";
 import { container } from "tsyringe";
 import { DatabaseService } from "@/config/database/connect";
 import { INewsRepository } from "@/modules/news/interfaces/news.repository.interface";
-import { OllamaNewsAnalyzer } from "@/modules/news/services/ollama-news-analyzer.service";
+import { OllamaNewsAnalyzer } from "@/modules/news/features/analysis/services/ollama-news-analyzer.service";
 import { ILogger } from "@/shared/logger/logger.interface";
 
 async function testOllamaWithRealNews() {
@@ -66,9 +66,7 @@ async function testOllamaWithRealNews() {
       const result = await analyzer.analyzeNews(news);
       const duration = Date.now() - startTime;
 
-      console.log(
-        `   Time: ${duration}ms (${(duration / 1000).toFixed(1)}s)`
-      );
+      console.log(`   Time: ${duration}ms (${(duration / 1000).toFixed(1)}s)`);
       console.log("");
 
       console.log("Analysis Result:");

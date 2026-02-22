@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import { OllamaNewsAnalyzer } from "../../services/ollama-news-analyzer.service";
+import { OllamaNewsAnalyzer } from "../../features/analysis/services/ollama-news-analyzer.service";
 import { ILogger } from "@/shared/logger/logger.interface";
 import { NewsEntity, NewsPlatform } from "../../entities/news.entity";
 import axios from "axios";
-import { NewsCategory } from "@/modules/whatsapp/entities/subscriber.entity";
+import { NewsCategory } from "@/shared/entities/user.entity";
 
 const mockLogger: ILogger = {
   info: jest.fn(),
@@ -75,7 +75,7 @@ describe("Ollama Integration Test (Real)", () => {
         expect(result.summary).toBeTruthy();
         expect(result.keywords).toBeDefined();
       },
-      60000
+      60000,
     );
 
     (isOllamaRunning ? it : it.skip)(
@@ -98,7 +98,7 @@ describe("Ollama Integration Test (Real)", () => {
         expect(result.categories).toContain("politics");
         expect(result.summary).toBeTruthy();
       },
-      60000
+      60000,
     );
 
     (isOllamaRunning ? it : it.skip)(
@@ -121,7 +121,7 @@ describe("Ollama Integration Test (Real)", () => {
         expect(result.categories).toBeDefined();
         expect(result.summary).toBeTruthy();
       },
-      60000
+      60000,
     );
 
     (isOllamaRunning ? it : it.skip)(
@@ -153,7 +153,7 @@ describe("Ollama Integration Test (Real)", () => {
         expect(results[0].categories).toBeDefined();
         expect(results[1].categories).toBeDefined();
       },
-      120000
+      120000,
     );
   });
 
@@ -175,7 +175,7 @@ describe("Ollama Integration Test (Real)", () => {
 
         expect(duration).toBeLessThan(30000);
       },
-      35000
+      35000,
     );
   });
 
@@ -205,7 +205,7 @@ describe("Ollama Integration Test (Real)", () => {
         const selected = analyzer.selectBestForCategories(
           analyzed,
           [NewsCategory.TECHNOLOGY],
-          2
+          2,
         );
 
         console.log("\n[TEST] Selected News (Technology):");
@@ -217,10 +217,10 @@ describe("Ollama Integration Test (Real)", () => {
 
         expect(selected.length).toBeLessThanOrEqual(2);
         expect(
-          selected.every((s) => s.categories.includes(NewsCategory.TECHNOLOGY))
+          selected.every((s) => s.categories.includes(NewsCategory.TECHNOLOGY)),
         ).toBe(true);
       },
-      120000
+      120000,
     );
   });
 

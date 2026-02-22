@@ -1,6 +1,6 @@
-import { SaveNewsUseCase } from "../../use-cases/save-news.use-case";
+import { SaveNewsUseCase } from "../../features/storage/use-cases/save-news.use-case";
 import { INewsRepository } from "../../interfaces/news.repository.interface";
-import { GetNewsUseCase } from "../../use-cases/get-news.use-case";
+import { GetNewsUseCase } from "../../features/storage/use-cases/get-news.use-case";
 import { NewsEntity, NewsPlatform } from "../../entities/news.entity";
 import { createMockLogger } from "@/__tests__/mocks/logger.mock";
 

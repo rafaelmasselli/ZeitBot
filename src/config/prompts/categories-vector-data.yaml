@@ -1,0 +1,166 @@
+categories:
+  technology:
+    multilingual_description: |
+      Technology, innovation, artificial intelligence, programming, startups, software, hardware, computing, internet, electronic devices, applications, social media, cybersecurity, blockchain, IoT
+      Tecnologia, inovação, inteligência artificial, programação, startups, software, hardware, computação, internet, dispositivos eletrônicos, aplicativos, redes sociais, cibersegurança, blockchain, IoT
+      Tecnología, innovación, inteligencia artificial, programación, startups, software, hardware, computación, internet, aplicaciones, redes sociales, ciberseguridad, blockchain, IoT
+    examples:
+      - "I like technology and innovation"
+      - "Gosto de notícias sobre tecnologia"
+      - "Me gusta tecnología e innovación"
+      - "Technology news and AI"
+      - "Quero saber sobre IA"
+      - "Software engineering"
+
+  politics:
+    multilingual_description: |
+      Politics, government, elections, parliament, senate, congress, ministers, deputies, president, political parties, laws, voting, democracy, public policies, reforms
+      Política, governo, eleições, parlamento, senado, congresso, ministros, deputados, presidente, partidos políticos, leis, votações, democracia, políticas públicas, reformas
+      Política, gobierno, elecciones, parlamento, senado, congreso, ministros, diputados, presidente, partidos políticos, leyes, votaciones, democracia, políticas públicas, reformas
+    examples:
+      - "Political news and elections"
+      - "Quero notícias de política"
+      - "Me interesa política y gobierno"
+      - "Government policies"
+      - "Eleições e parlamento"
+      - "Noticias políticas"
+
+  sports:
+    multilingual_description: |
+      Sports, football, basketball, volleyball, tennis, olympics, championships, teams, athletes, games, competitions, world cup
+      Esportes, futebol, basquete, vôlei, tênis, olimpíadas, campeonatos, times, atletas, jogos, competições, copa do mundo
+      Deportes, fútbol, baloncesto, voleibol, tenis, olimpiadas, campeonatos, equipos, atletas, juegos, competiciones, copa del mundo
+    examples:
+      - "I love sports and football"
+      - "Adoro futebol e esportes"
+      - "Me encanta el fútbol"
+      - "Basketball and olympics"
+      - "Notícias sobre olimpíadas"
+      - "Noticias deportivas"
+
+  economy:
+    multilingual_description: |
+      Economy, finance, market, stock exchange, investments, banks, dollar, GDP, inflation, interest rates, companies, business, financial startups
+      Economia, finanças, mercado, bolsa de valores, investimentos, bancos, dólar, PIB, inflação, juros, empresas, negócios, startups financeiras
+      Economía, finanzas, mercado, bolsa de valores, inversiones, bancos, dólar, PIB, inflación, intereses, empresas, negocios, startups financieras
+    examples:
+      - "Economy and financial markets"
+      - "Quero saber sobre economia"
+      - "Me interesa economía y mercado"
+      - "Stock market and investments"
+      - "Bolsa e investimentos"
+      - "Mercado financiero"
+
+  health:
+    multilingual_description: |
+      Health, medicine, diseases, treatments, vaccines, hospitals, medical research, wellness, nutrition, fitness, pandemics, healthcare system
+      Saúde, medicina, doenças, tratamentos, vacinas, hospitais, pesquisas médicas, bem-estar, nutrição, fitness, pandemias, sistema de saúde
+      Salud, medicina, enfermedades, tratamientos, vacunas, hospitales, investigación médica, bienestar, nutrición, fitness, pandemias, sistema de salud
+    examples:
+      - "Health news and medical research"
+      - "Quero notícias sobre saúde"
+      - "Me interesa salud y medicina"
+      - "Vaccines and treatments"
+      - "Vacinas e tratamentos"
+      - "Investigación médica"
+
+  entertainment:
+    multilingual_description: |
+      Entertainment, cinema, movies, series, music, concerts, festivals, celebrities, TV, streaming, pop culture, art
+      Entretenimento, cinema, filmes, séries, música, shows, festivais, celebridades, TV, streaming, cultura pop, arte
+      Entretenimiento, cine, películas, series, música, conciertos, festivales, celebridades, TV, streaming, cultura pop, arte
+    examples:
+      - "Entertainment and movies"
+      - "Adoro cinema e séries"
+      - "Me encanta cine y música"
+      - "Music and celebrity news"
+      - "Shows e festivais"
+      - "Noticias de celebridades"
+
+  world:
+    multilingual_description: |
+      International news, world events, foreign relations, countries, wars, conflicts, UN, diplomacy, global events
+      Notícias internacionais, acontecimentos mundiais, relações exteriores, países, guerras, conflitos, ONU, diplomacia, eventos globais
+      Noticias internacionales, acontecimientos mundiales, relaciones exteriores, países, guerras, conflictos, ONU, diplomacia, eventos globales
+    examples:
+      - "International news and world events"
+      - "Quero notícias internacionais"
+      - "Me interesa noticias internacionales"
+      - "Global affairs and diplomacy"
+      - "Acontecimentos mundiais"
+      - "Eventos globales"
+
+  all:
+    multilingual_description: |
+      All news categories, general interest in various topics, everything, todas as categorias, todas las categorías
+    examples:
+      - "I want all news"
+      - "Quero receber tudo"
+      - "Quiero todas las categorías"
+      - "Everything"
+      - "Todas as categorias"
+      - "Todo"
+
+languages:
+  portuguese:
+    indicators:
+      - "gosto de"
+      - "quero saber"
+      - "me interessa"
+      - "notícias sobre"
+      - "eu prefiro"
+      - "adoro"
+
+  english:
+    indicators:
+      - "I like"
+      - "I want to know"
+      - "I'm interested in"
+      - "news about"
+      - "I prefer"
+      - "I love"
+
+  spanish:
+    indicators:
+      - "me gusta"
+      - "quiero saber"
+      - "me interesa"
+      - "noticias sobre"
+      - "prefiero"
+      - "me encanta"
+
+  french:
+    indicators:
+      - "j'aime"
+      - "je veux savoir"
+      - "je suis intéressé"
+      - "nouvelles sur"
+      - "je préfère"
+
+  german:
+    indicators:
+      - "ich mag"
+      - "ich möchte wissen"
+      - "ich interessiere mich"
+      - "nachrichten über"
+
+  italian:
+    indicators:
+      - "mi piace"
+      - "voglio sapere"
+      - "mi interessa"
+      - "notizie su"
+
+  chinese:
+    indicators:
+      - "我喜欢"
+      - "我想知道"
+      - "我对"
+      - "新闻"
+
+  japanese:
+    indicators:
+      - "好きです"
+      - "知りたい"
+      - "興味があります"
+      - "ニュース"

@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { setupContainer } from "@/config/container/container.config";
 import { container } from "tsyringe";
-import { IEmbeddingService } from "@/shared/services/embedding.interface";
+import { IEmbeddingService } from "@/shared/interface/embedding.interface";
 import { ILogger } from "@/shared/logger/logger.interface";
 
 async function testEmbeddings() {
@@ -46,11 +46,11 @@ async function testEmbeddings() {
         `   First 10 values: [${embedding
           .slice(0, 10)
           .map((v) => v.toFixed(3))
-          .join(", ")}...]`
+          .join(", ")}...]`,
       );
 
       const magnitude = Math.sqrt(
-        embedding.reduce((sum, val) => sum + val * val, 0)
+        embedding.reduce((sum, val) => sum + val * val, 0),
       );
       console.log(`   Vector magnitude: ${magnitude.toFixed(3)}`);
       console.log("");
@@ -80,7 +80,7 @@ async function testEmbeddings() {
 
       const similarity = embeddingService.calculateSimilarity(
         embeddings[idx1].vector,
-        embeddings[idx2].vector
+        embeddings[idx2].vector,
       );
 
       const percentage = (similarity * 100).toFixed(1);
@@ -108,19 +108,18 @@ async function testEmbeddings() {
 
     console.log("Generating embeddings for 3 texts in batch...");
     const batchStartTime = Date.now();
-    const batchEmbeddings = await embeddingService.generateBatchEmbeddings(
-      batchTexts
-    );
+    const batchEmbeddings =
+      await embeddingService.generateBatchEmbeddings(batchTexts);
     const batchDuration = Date.now() - batchStartTime;
 
     console.log(`   [OK] Generated ${batchEmbeddings.length} embeddings`);
     console.log(
       `   Total time: ${batchDuration}ms (${(batchDuration / 1000).toFixed(
-        1
-      )}s)`
+        1,
+      )}s)`,
     );
     console.log(
-      `   Average per text: ${(batchDuration / batchTexts.length).toFixed(0)}ms`
+      `   Average per text: ${(batchDuration / batchTexts.length).toFixed(0)}ms`,
     );
     console.log("");
 
@@ -144,9 +143,8 @@ async function testEmbeddings() {
     console.log("");
 
     console.log("Generating embedding for user preference...");
-    const prefEmbedding = await embeddingService.generateEmbedding(
-      userPreference
-    );
+    const prefEmbedding =
+      await embeddingService.generateEmbedding(userPreference);
     console.log(`   [OK] Generated (${prefEmbedding.length} dimensions)`);
     console.log("");
 
@@ -159,7 +157,7 @@ async function testEmbeddings() {
       const newsEmbedding = await embeddingService.generateEmbedding(news);
       const similarity = embeddingService.calculateSimilarity(
         prefEmbedding,
-        newsEmbedding
+        newsEmbedding,
       );
       newsResults.push({ text: news, score: similarity });
     }
@@ -195,7 +193,7 @@ async function testEmbeddings() {
         totalMemory /
         1024 /
         1024
-      ).toFixed(2)} MB)`
+      ).toFixed(2)} MB)`,
     );
     console.log("");
 

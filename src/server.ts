@@ -3,12 +3,9 @@ import { setupContainer } from "@/config/container/container.config";
 import { container } from "tsyringe";
 import { DatabaseService } from "@/config/database";
 import { ILogger } from "@/shared/logger";
-import { IConfig } from "@/shared/config/";
+import { IConfig } from "@/config/env";
 import { startNewsEmbeddingsJob, initializeJobs } from "@/modules/news";
-import {
-  initializeWhatsAppJobs,
-  startWhatsAppAIRecommendationsJob,
-} from "@/modules/whatsapp";
+import { startWhatsAppAIRecommendationsJob } from "@/modules/whatsapp";
 
 async function bootstrap() {
   try {
@@ -22,13 +19,8 @@ async function bootstrap() {
     const databaseService = container.resolve(DatabaseService);
     await databaseService.connect();
 
-    // const whatsAppController = container.resolve(WhatsAppController);
-    // await whatsAppController.initialize();
-
     await initializeJobs();
     startNewsEmbeddingsJob();
-
-    // await initializeWhatsAppJobs();
 
     startWhatsAppAIRecommendationsJob();
   } catch (error) {

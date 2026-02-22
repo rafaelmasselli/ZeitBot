@@ -1,5 +1,5 @@
 import { NewsEntity } from "../entities/news.entity";
-import { NewsCategory } from "@/modules/whatsapp/entities/subscriber.entity";
+import { NewsCategory } from "@/shared/entities/user.entity";
 
 export interface NewsAnalysisResult {
   news: NewsEntity;
