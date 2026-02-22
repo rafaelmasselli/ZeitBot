@@ -3,30 +3,42 @@ import { INewsProvider } from "@/modules/news/interfaces/news-provider.interface
 import { NewsEntity, NewsPlatform } from "@/modules/news/entities/news.entity";
 import { ILogger } from "@/shared/logger/logger.interface";
 import { ApiService } from "@/shared/services/api.service";
+import { convertXmlToJson } from "@/shared/utils";
 import { BrazilIndeedStrategy } from "./brazil-indeed.strategy";
+import { IBrasilDeFatoRssResponse } from "./brazil-indeed.interface";
 
 @injectable()
 export class BrazilIndeedProvider extends ApiService implements INewsProvider {
   private readonly strategy: BrazilIndeedStrategy;
 
   constructor(@inject("ILogger") private readonly logger: ILogger) {
-    const baseURL = process.env.BRAZIL_INDEED_URL || "https://www.brasildefato.com.br";
-    super({ baseURL });
+    const baseURL =
+      process.env.BRAZIL_INDEED_URL || "https://www.brasildefato.com.br";
+    super({
+      baseURL,
+      headers: {
+        "User-Agent":
+          "ZeitBot/1.0 (News aggregator; +https://github.com/zeitbot)",
+      },
+    });
     this.strategy = new BrazilIndeedStrategy();
   }
 
   async fetchNews(): Promise<NewsEntity[]> {
     try {
       this.logger.info(`Fetching news from ${NewsPlatform.BRAZIL_INDEED}`);
-      
-      const response = await this.client.get("/", {
+
+      const response = await this.client.get("/feed/", {
         responseType: "text",
       });
-      
-      return this.strategy.parse(response.data);
+
+      const jsonData = await convertXmlToJson<IBrasilDeFatoRssResponse>(
+        response.data,
+      );
+      return this.strategy.parseFromRss(jsonData);
     } catch (error) {
       this.logger.error(
-        `Error fetching Brasil de Fato news: ${(error as Error).message}`
+        `Error fetching Brasil de Fato news: ${(error as Error).message}`,
       );
       throw error;
     }
@@ -41,7 +53,7 @@ export class BrazilIndeedProvider extends ApiService implements INewsProvider {
       return this.strategy.getDetails(response.data, news);
     } catch (error) {
       this.logger.error(
-        `Error getting news details "${news.title}": ${(error as Error).message}`
+        `Error getting news details "${news.title}": ${(error as Error).message}`,
       );
       return news;
     }
@@ -50,22 +62,19 @@ export class BrazilIndeedProvider extends ApiService implements INewsProvider {
   async processNews(): Promise<NewsEntity[]> {
     try {
       const news = await this.fetchNews();
-      
+
       if (!news.length) {
         this.logger.info(`No news found from Brasil de Fato`);
         return [];
       }
 
-      const newsWithDetails = await Promise.all(
-        news.map((newsItem) => this.getDetails(newsItem))
+      this.logger.info(
+        `${news.length} news items processed from Brasil de Fato`,
       );
-
-      this.logger.info(`${newsWithDetails.length} news items processed from Brasil de Fato`);
-      return newsWithDetails;
+      return news;
     } catch (error) {
       this.logger.error(`Error processing Brasil de Fato news: ${error}`);
       throw error;
     }
   }
 }
-
