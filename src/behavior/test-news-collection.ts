@@ -2,6 +2,21 @@ import "reflect-metadata";
 import { setupContainer } from "@/config/container/container.config";
 import { container } from "tsyringe";
 import { GetNewsUseCase } from "@/modules/news/features/storage/use-cases/get-news.use-case";
+import { INewsProvider } from "@/modules/news/interfaces/news-provider.interface";
+
+const PROVIDER_DISPLAY_NAMES: Record<string, string> = {
+  BBCNewsProvider: "BBC",
+  BrazilIndeedProvider: "Brasil de Fato",
+  CnnBrasilProvider: "CNN Brasil",
+  CartaCapitalProvider: "CartaCapital",
+};
+
+function getProviderDisplayNames(): string[] {
+  const providers = container.resolveAll<INewsProvider>("INewsProvider");
+  return providers.map(
+    (p) => PROVIDER_DISPLAY_NAMES[p.constructor.name] ?? p.constructor.name,
+  );
+}
 
 async function testNewsCollection() {
   try {
@@ -12,9 +27,12 @@ async function testNewsCollection() {
     setupContainer();
 
     const getNewsUseCase = container.resolve(GetNewsUseCase);
+    const providerNames = getProviderDisplayNames();
 
     console.log("[1] Fetching news from all providers...");
-    console.log("    (BBC, Brazil Indeed, etc. – may take a few seconds)");
+    console.log(
+      `    (${providerNames.join(", ")} – may take a few seconds)`,
+    );
     console.log("");
 
     const news = await getNewsUseCase.execute();
