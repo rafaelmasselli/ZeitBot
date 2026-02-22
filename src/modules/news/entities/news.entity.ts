@@ -5,6 +5,8 @@ export enum NewsPlatform {
   BBC = "BBC",
   G1 = "G1",
   BRAZIL_INDEED = "BRAZIL_INDEED",
+  CNN_BRASIL = "CNN_BRASIL",
+  CARTACAPITAL = "CARTACAPITAL",
 }
 
 @modelOptions({
