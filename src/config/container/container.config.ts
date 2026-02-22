@@ -22,6 +22,7 @@ import { NewsRepository } from "@/modules/news/features/storage/repositories/new
 import { BBCNewsProvider } from "@/modules/news/features/providers/bbc/bbc.provider";
 import { BrazilIndeedProvider } from "@/modules/news/features/providers/brazil-indeed/brazil-indeed.provider";
 import { CnnBrasilProvider } from "@/modules/news/features/providers/cnn-brasil/cnn-brasil.provider";
+import { CartaCapitalProvider } from "@/modules/news/features/providers/cartacapital/cartacapital.provider";
 import { GetNewsUseCase } from "@/modules/news/features/storage/use-cases/get-news.use-case";
 import { SaveNewsUseCase } from "@/modules/news/features/storage/use-cases/save-news.use-case";
 import { GenerateNewsEmbeddingsUseCase } from "@/modules/news/features/embeddings/use-cases/generate-news-embeddings.use-case";
@@ -107,6 +108,9 @@ export function setupContainer(): void {
   });
   container.register<INewsProvider>("INewsProvider", {
     useClass: CnnBrasilProvider,
+  });
+  container.register<INewsProvider>("INewsProvider", {
+    useClass: CartaCapitalProvider,
   });
 
   container.registerSingleton(GetNewsUseCase);

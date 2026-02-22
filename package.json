@@ -13,7 +13,8 @@
     "test:verbose": "jest --verbose",
     "test:ollama": "ts-node -r tsconfig-paths/register src/behavior/test-ollama-real.ts",
     "test:ai": "ts-node -r tsconfig-paths/register src/behavior/test-ai-recommendations.ts",
-    "test:embeddings": "ts-node -r tsconfig-paths/register src/behavior/test-embeddings.ts"
+    "test:embeddings": "ts-node -r tsconfig-paths/register src/behavior/test-embeddings.ts",
+    "test:news": "ts-node -r tsconfig-paths/register src/behavior/test-news-collection.ts"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
