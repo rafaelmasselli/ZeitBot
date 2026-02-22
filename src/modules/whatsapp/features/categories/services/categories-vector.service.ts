@@ -1,6 +1,6 @@
 import { injectable, inject } from "tsyringe";
 import { ILogger } from "@/shared/logger/logger.interface";
-import { IEmbeddingService } from "@/shared/services/embedding.interface";
+import { IEmbeddingService } from "@/shared/interface/embedding.interface";
 import { NewsCategory, UserLanguage } from "@/shared/entities/user.entity";
 import { PromptTemplateService } from "@/shared/services/prompt-template.service";
 import { INamePrompt } from "@/config/prompts/interface";

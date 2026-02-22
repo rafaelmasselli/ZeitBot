@@ -2,7 +2,7 @@ import { injectable, inject } from "tsyringe";
 import { INewsProvider } from "@/modules/news/interfaces/news-provider.interface";
 import { NewsEntity, NewsPlatform } from "@/modules/news/entities/news.entity";
 import { ILogger } from "@/shared/logger/logger.interface";
-import { ApiService } from "@/shared/api.service";
+import { ApiService } from "@/shared/services/api.service";
 import { BrazilIndeedStrategy } from "./brazil-indeed.strategy";
 
 @injectable()

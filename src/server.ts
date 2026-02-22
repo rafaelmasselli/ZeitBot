@@ -5,10 +5,7 @@ import { DatabaseService } from "@/config/database";
 import { ILogger } from "@/shared/logger";
 import { IConfig } from "@/config/env";
 import { startNewsEmbeddingsJob, initializeJobs } from "@/modules/news";
-import {
-  initializeWhatsAppJobs,
-  startWhatsAppAIRecommendationsJob,
-} from "@/modules/whatsapp";
+import { startWhatsAppAIRecommendationsJob } from "@/modules/whatsapp";
 
 async function bootstrap() {
   try {

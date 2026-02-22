@@ -6,10 +6,7 @@ import { INewsRepository } from "@/modules/news/interfaces/news.repository.inter
 import { UserRepository } from "@/shared/repositories/user.repository";
 import { NewsRecommendationService } from "@/shared/services/news-recommendation.service";
 import { ILogger } from "@/shared/logger/logger.interface";
-import {
-  UserEntity,
-  NewsCategory,
-} from "@/shared/entities/user.entity";
+import { UserEntity, NewsCategory } from "@/shared/entities/user.entity";
 
 async function testAIRecommendations() {
   try {
@@ -50,7 +47,7 @@ async function testAIRecommendations() {
 
     console.log("   Generating embedding for preferences...");
     const embedding = await recommendationService.generatePreferencesEmbedding(
-      testUser.preferences_description!
+      testUser.preferences_description!,
     );
     testUser.preferences_embedding = embedding;
     console.log(`   [OK] Embedding generated (${embedding.length} dimensions)`);
@@ -59,7 +56,7 @@ async function testAIRecommendations() {
     console.log("[3] Fetching news with embeddings...");
     const allNews = await newsRepository.findAll();
     const newsWithEmbeddings = allNews.filter(
-      (news) => news.content_embedding && news.content_embedding.length > 0
+      (news) => news.content_embedding && news.content_embedding.length > 0,
     );
 
     if (newsWithEmbeddings.length === 0) {
@@ -70,7 +67,7 @@ async function testAIRecommendations() {
     }
 
     console.log(
-      `   [OK] Found ${newsWithEmbeddings.length} news with embeddings`
+      `   [OK] Found ${newsWithEmbeddings.length} news with embeddings`,
     );
     console.log("");
 
@@ -79,13 +76,13 @@ async function testAIRecommendations() {
     const recommendations =
       await recommendationService.recommendNewsForSubscriber(
         testUser,
-        newsWithEmbeddings
+        newsWithEmbeddings,
       );
     const duration = Date.now() - startTime;
 
     console.log(`   [OK] Processed in ${duration}ms`);
     console.log(
-      `   [OK] Found ${recommendations.length} recommendations (threshold: ${testUser.similarity_threshold})`
+      `   [OK] Found ${recommendations.length} recommendations (threshold: ${testUser.similarity_threshold})`,
     );
     console.log("");
 
@@ -106,7 +103,7 @@ async function testAIRecommendations() {
         console.log(`   Link: ${rec.news.link}`);
         if (rec.news.news_summary) {
           console.log(
-            `   Summary: ${rec.news.news_summary.substring(0, 80)}...`
+            `   Summary: ${rec.news.news_summary.substring(0, 80)}...`,
           );
         }
         console.log("");

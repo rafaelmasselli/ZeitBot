@@ -66,9 +66,7 @@ async function testOllamaWithRealNews() {
       const result = await analyzer.analyzeNews(news);
       const duration = Date.now() - startTime;
 
-      console.log(
-        `   Time: ${duration}ms (${(duration / 1000).toFixed(1)}s)`
-      );
+      console.log(`   Time: ${duration}ms (${(duration / 1000).toFixed(1)}s)`);
       console.log("");
 
       console.log("Analysis Result:");

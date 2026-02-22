@@ -1,7 +1,7 @@
 import { injectable, inject } from "tsyringe";
 import { UserEntity } from "@/shared/entities/user.entity";
 import { CachedUserRepository } from "@/shared/repositories/cached-user.repository";
-import { IEmbeddingService } from "@/shared/services/embedding.interface";
+import { IEmbeddingService } from "@/shared/interface/embedding.interface";
 import { ILogger } from "@/shared/logger/logger.interface";
 
 @injectable()

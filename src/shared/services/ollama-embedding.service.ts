@@ -1,6 +1,6 @@
 import { injectable, inject } from "tsyringe";
 import axios from "axios";
-import { IEmbeddingService } from "./embedding.interface";
+import { IEmbeddingService } from "../interface/embedding.interface";
 import { ILogger } from "../logger/logger.interface";
 import { IConfig } from "@/config/env/config.interface";
 

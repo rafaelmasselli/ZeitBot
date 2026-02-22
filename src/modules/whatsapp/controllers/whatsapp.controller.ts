@@ -17,7 +17,7 @@ export class WhatsAppController {
     @inject(UserManagerService) private userManager: UserManagerService,
     @inject(UserContextService) private userContext: UserContextService,
     @injectAll("WhatsAppCommand") private commands: IWhatsAppCommand[],
-    @inject("ILogger") private readonly logger: ILogger
+    @inject("ILogger") private readonly logger: ILogger,
   ) {}
 
   async initialize(): Promise<void> {

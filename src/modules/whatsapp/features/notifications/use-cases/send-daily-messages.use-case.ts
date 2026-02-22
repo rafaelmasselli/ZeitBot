@@ -8,7 +8,7 @@ export class SendDailyMessagesUseCase {
   constructor(
     @inject(WhatsAppService) private whatsAppService: WhatsAppService,
     @inject(GetNewsUseCase) private getNewsUseCase: GetNewsUseCase,
-    @inject("ILogger") private readonly logger: ILogger
+    @inject("ILogger") private readonly logger: ILogger,
   ) {}
 
   async execute(): Promise<void> {
@@ -50,18 +50,18 @@ export class SendDailyMessagesUseCase {
           this.logger.info(`Message sent to ${phoneNumber}`);
         } catch (error) {
           this.logger.error(
-            `Error sending message to ${recipient}: ${(error as Error).message}`
+            `Error sending message to ${recipient}: ${(error as Error).message}`,
           );
         }
       });
 
       await Promise.all(sendPromises);
       this.logger.info(
-        `Daily messages sent successfully to ${recipients.length} recipient(s)`
+        `Daily messages sent successfully to ${recipients.length} recipient(s)`,
       );
     } catch (error) {
       this.logger.error(
-        `Error sending daily messages: ${(error as Error).message}`
+        `Error sending daily messages: ${(error as Error).message}`,
       );
       throw error;
     }

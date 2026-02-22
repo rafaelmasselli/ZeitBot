@@ -3,7 +3,7 @@ import { INewsProvider } from "@/modules/news/interfaces/news-provider.interface
 import { NewsEntity, NewsPlatform } from "@/modules/news/entities/news.entity";
 import { ILogger } from "@/shared/logger/logger.interface";
 import { convertXmlToJson } from "@/shared/utils";
-import { ApiService } from "@/shared/api.service";
+import { ApiService } from "@/shared/services/api.service";
 import { BBCNewsStrategy } from "./bbc.strategy";
 import { IBBCNewsAPIResponse } from "./bbc.interface";
 import axios from "axios";
@@ -21,19 +21,17 @@ export class BBCNewsProvider extends ApiService implements INewsProvider {
   async fetchNews(): Promise<NewsEntity[]> {
     try {
       this.logger.info(`Fetching news from ${NewsPlatform.BBC}`);
-      
+
       const response = await this.client.get("/portuguese/rss.xml", {
         responseType: "text",
       });
-      
+
       const xmlData = response.data;
       const jsonData = await convertXmlToJson<IBBCNewsAPIResponse>(xmlData);
-      
+
       return this.strategy.parse(jsonData);
     } catch (error) {
-      this.logger.error(
-        `Error fetching BBC news: ${(error as Error).message}`
-      );
+      this.logger.error(`Error fetching BBC news: ${(error as Error).message}`);
       throw error;
     }
   }
@@ -45,7 +43,7 @@ export class BBCNewsProvider extends ApiService implements INewsProvider {
       return this.strategy.convertHtmlToText(html, news);
     } catch (error) {
       this.logger.error(
-        `Error getting news details "${news.title}": ${(error as Error).message}`
+        `Error getting news details "${news.title}": ${(error as Error).message}`,
       );
       return news;
     }
@@ -54,17 +52,19 @@ export class BBCNewsProvider extends ApiService implements INewsProvider {
   async processNews(): Promise<NewsEntity[]> {
     try {
       const news = await this.fetchNews();
-      
+
       if (!news.length) {
         this.logger.info(`No news found from BBC`);
         return [];
       }
 
       const newsWithDetails = await Promise.all(
-        news.map((newsItem) => this.getDetails(newsItem))
+        news.map((newsItem) => this.getDetails(newsItem)),
       );
 
-      this.logger.info(`${newsWithDetails.length} news items processed from BBC`);
+      this.logger.info(
+        `${newsWithDetails.length} news items processed from BBC`,
+      );
       return newsWithDetails;
     } catch (error) {
       this.logger.error(`Error processing BBC news: ${error}`);
@@ -72,4 +72,3 @@ export class BBCNewsProvider extends ApiService implements INewsProvider {
     }
   }
 }
-

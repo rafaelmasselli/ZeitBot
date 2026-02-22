@@ -6,7 +6,6 @@ import { IConfig } from "@/config/env/config.interface";
 import { EnvConfig } from "@/config/env/env.config";
 import { DatabaseService } from "@/config/database/connect";
 import {
-  IEmbeddingService,
   OllamaEmbeddingService,
   NewsRecommendationService,
   PromptTemplateService,
@@ -34,7 +33,10 @@ import {
   UserContextService,
   WhatsAppController,
 } from "@/modules/whatsapp";
-import { IWhatsAppCommand, CommandHandler } from "@/modules/whatsapp/features/commands";
+import {
+  IWhatsAppCommand,
+  CommandHandler,
+} from "@/modules/whatsapp/features/commands";
 import {
   RegistrationFlowService,
   RegistrationStepFactory,
@@ -74,6 +76,7 @@ import {
   UpdatePreferencesUseCase,
 } from "@/modules/whatsapp/features/subscription";
 import { AppRoutes } from "@/routes/index.routes";
+import { IEmbeddingService } from "@/shared/interface/embedding.interface";
 
 export function setupContainer(): void {
   container.registerSingleton<ILogger>("ILogger", WinstonLogger);
@@ -83,7 +86,7 @@ export function setupContainer(): void {
 
   container.registerSingleton<IEmbeddingService>(
     "IEmbeddingService",
-    OllamaEmbeddingService
+    OllamaEmbeddingService,
   );
   container.registerSingleton(NewsRecommendationService);
   container.registerSingleton(PromptTemplateService);
@@ -92,7 +95,7 @@ export function setupContainer(): void {
 
   container.registerSingleton<INewsRepository>(
     "INewsRepository",
-    NewsRepository
+    NewsRepository,
   );
 
   container.register<INewsProvider>("INewsProvider", {
@@ -111,17 +114,17 @@ export function setupContainer(): void {
   if (aiProvider === "gemini") {
     container.registerSingleton<INewsAnalyzer>(
       "INewsAnalyzer",
-      GeminiNewsAnalyzer
+      GeminiNewsAnalyzer,
     );
   } else if (aiProvider === "ollama") {
     container.registerSingleton<INewsAnalyzer>(
       "INewsAnalyzer",
-      OllamaNewsAnalyzer
+      OllamaNewsAnalyzer,
     );
   } else {
     container.registerSingleton<INewsAnalyzer>(
       "INewsAnalyzer",
-      SimpleNewsAnalyzer
+      SimpleNewsAnalyzer,
     );
   }
 
@@ -132,18 +135,18 @@ export function setupContainer(): void {
   container.registerSingleton(MessageFormatterService);
   container.registerSingleton(CategoriesVectorService);
   container.registerSingleton(CategoriesAIService);
-  
+
   container.registerSingleton<ICategoriesValidator>(
     "ICategoriesValidator",
-    CategoriesValidator
+    CategoriesValidator,
   );
   container.registerSingleton<IRegistrationPresenter>(
     "IRegistrationPresenter",
-    RegistrationPresenter
+    RegistrationPresenter,
   );
   container.registerSingleton<IRegistrationPersister>(
     "IRegistrationPersister",
-    RegistrationPersister
+    RegistrationPersister,
   );
 
   container.registerSingleton(StartRegistrationStep);

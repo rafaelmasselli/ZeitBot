@@ -1,5 +1,5 @@
 import { injectable, inject } from "tsyringe";
-import { IEmbeddingService } from "./embedding.interface";
+import { IEmbeddingService } from "../interface/embedding.interface";
 import { ILogger } from "../logger/logger.interface";
 import { NewsEntity } from "@/modules/news/entities/news.entity";
 import { UserEntity } from "@/shared/entities/user.entity";
